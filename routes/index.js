@@ -6,9 +6,10 @@ router.get('/', function(req, res) {
         res.render('index.html', { title : "Sample Node Express + Nunjucks app" });
 });
 
-/* GET home page. */
+/* POST home page. */
 router.post('/', function(req, res) {
-        res.render('index.html', { title : req });
+	console.log(JSON.stringify(req.body));
+    res.send("Here's some response.");
 });
 
 module.exports = router;
