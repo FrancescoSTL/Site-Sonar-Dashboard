@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-        res.render('index.html', { title : "Sample Node Express + Nunjucks app");
+        res.render('index.html', { title : "Sample Node Express + Nunjucks app" });
 });
 
 module.exports = router;
