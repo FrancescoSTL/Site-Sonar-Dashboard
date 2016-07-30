@@ -12,6 +12,7 @@
     "express": "~4.13.4",
     "nunjucks": "~2.4.2",
     "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "mongodb": "~2.2.5"
   }
 }
