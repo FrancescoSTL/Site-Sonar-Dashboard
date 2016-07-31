@@ -15,10 +15,20 @@ router.get('/', function(req, res) {
 			var benchmarkDB = db.collection('benchmark_logs');
 
 			try {
-				benchmarkDB.find().toArray(function(err, assetLoadTimes) {
-					res.render('index.html', { records : assetLoadTimes });
+				benchmarkDB.find({},{sort: {assetCompleteTime: -1}}).toArray(function(err, assetLoadTimes) {
+					benchmarkDB.find().count(function (err, total) {
+						var millisecondTotal = 0;
+						for (var record in assetLoadTimes) {
+							millisecondTotal += parseInt(record);
+						}
 
-					db.close();
+						// calculate our total processing time in minutes, and round to 2 decimal places
+						var minutesTotal = Math.round((millisecondTotal * .000016667) * 100) / 100;
+
+						res.render('index.html', { records : assetLoadTimes.slice(0,99), count: total, totalTime: minutesTotal});
+
+						db.close();
+					});
 				});
 			} catch (e) {
 					console.log("Could not find records in database " + e);

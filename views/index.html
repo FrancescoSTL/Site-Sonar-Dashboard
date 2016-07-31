@@ -1,9 +1,11 @@
 <html>
     <head>
-        <title>{{ title }}</title>
+        <title>You're on the Ultra-Lightbeam</title>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
     </head>
     <body>
-        <p>Below are ad assets broken down by the url the were requested on, their network, and their load time.</p>
+    	<h1>We've benchmarked: {{ count }} ads, {{ totalTime }} minutes of load time</h1>
+        <p>Below are to latest 100 ad asset broken down by the url the were requested on, their network, and their load time.</p>
         <table>
         	<tr>
         		<th>Website</th>
