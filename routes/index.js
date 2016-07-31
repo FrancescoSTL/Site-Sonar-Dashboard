@@ -12,7 +12,7 @@ router.post('/log', function(req, res) {
 	// TODO: parse data and send to Mongo
 	var assetLoadTimes = req.body;
 	console.log(assetLoadTimes);
-	/*MongoClient.connect(url, function(err, db) {
+	MongoClient.connect(url, function(err, db) {
 		var benchmarkDB = db.collection('benchmark_logs');
 
 		benchmarkDB.insertMany(assetLoadTimes.assets, function() {
@@ -20,7 +20,7 @@ router.post('/log', function(req, res) {
   			res.send("Data successfully recieved by Ultra-Lightbeam. Thanks :-).");
 	    	db.close();
 		});
-	});*/
+	});
 });
 
 module.exports = router;
