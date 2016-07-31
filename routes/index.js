@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
 router.post('/log', function(req, res) {
 	// TODO: parse data and send to Mongo
 	var assetLoadTimes = Object.keys(req.body)[0];
-	console.log(assetLoadTimes);
+	console.log(assetLoadTimes.assets);
 	/*MongoClient.connect(url, function(err, db) {
 		var benchmarkDB = db.collection('benchmark_logs');
 
