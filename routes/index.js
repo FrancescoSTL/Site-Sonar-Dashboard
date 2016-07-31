@@ -10,14 +10,29 @@ var url = 'mongodb://heroku_803m4q4j:1f1t2tc0ih11omaekmln78tkcn@ds031995.mlab.co
 
 /* GET home page. */
 router.get('/', function(req, res) {
-     res.render('index.html', { title : "Sample Node Express + Nunjucks app" });
+	try {
+		MongoClient.connect(url, function(err, db) {
+			var benchmarkDB = db.collection('benchmark_logs');
+
+			try {
+				benchmarkDB.find().toArray(function(err, assetLoadTimes) {
+					res.render('index.html', { records : assetLoadTimes });
+
+					db.close();
+				});
+			} catch (e) {
+					console.log("Could not find records in database " + e);
+			}
+		});
+	} catch (e) {
+		console.log("Could not connect to MongoDb " + e);
+	}
 });
 
 /* POST for data logging to Mongo */
 router.post('/log', function(req, res) {
 	// TODO: parse data and send to Mongo
 	var assetLoadTimes = req.body.assets;
-	console.log(assetLoadTimes);
 	try {
 		MongoClient.connect(url, function(err, db) {
 			if(err) {

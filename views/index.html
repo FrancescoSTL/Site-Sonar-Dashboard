@@ -3,6 +3,20 @@
         <title>{{ title }}</title>
     </head>
     <body>
-        <p>Hello, world!</p>
+        <p>Below are ad assets broken down by the url the were requested on, their network, and their load time.</p>
+        <table>
+        	<tr>
+        		<th>Website</th>
+				<th>Ad Network</th>
+				<th>Load Time</th>
+        	</tr>
+        	{% for record in records %}
+	        	<tr>
+	        		<td>{{record.originUrl}}</td>
+					<td>{{record.adNetworkUrl}}</td>
+					<td>{{record.assetCompleteTime}}</td>
+	        	</tr>
+        	{% endfor %}
+        </table>
     </body>
 </html>
