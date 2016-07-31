@@ -7,6 +7,12 @@ var bodyParser = require('body-parser');
 var nunjucks = require('nunjucks');
 var routes = require('./routes/index');
 
+/* Import Mongo Dependencies */
+var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
+var ObjectId = require('mongodb').ObjectID;
+var url = 'mongodb://heroku_803m4q4j:1f1t2tc0ih11omaekmln78tkcn@ds031995.mlab.com:31995/heroku_803m4q4j';
+
 var app = express();
 
 //Nunjucks setup
