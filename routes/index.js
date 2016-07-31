@@ -12,23 +12,27 @@ router.post('/log', function(req, res) {
 	// TODO: parse data and send to Mongo
 	var assetLoadTimes = req.body.assets;
 	console.log(assetLoadTimes);
-	MongoClient.connect(url, function(err, db) {
-		if(err) {
-			console.log("Could not connect to MongoDb " + err);
-		} else {
-			var benchmarkDB = db.collection('benchmark_logs');
+	try {
+		MongoClient.connect(url, function(err, db) {
+			if(err) {
+				console.log("Could not connect to MongoDb " + err);
+			} else {
+				var benchmarkDB = db.collection('benchmark_logs');
 
-			benchmarkDB.insertMany(assetLoadTimes).then(function(err, r) {
-				if(err) {
-					console.log("Could not write to databse " + err);
-				} else {
-					// let the client know we've received their data
-		  			res.send("Data successfully recieved by Ultra-Lightbeam. Thanks :-).");
-			    	db.close();
-				}
-			});
-		}
-	});
+				benchmarkDB.insertMany(assetLoadTimes).then(function(err, r) {
+					if(err) {
+						console.log("Could not write to databse " + err);
+					} else {
+						// let the client know we've received their data
+			  			res.send("Data successfully recieved by Ultra-Lightbeam. Thanks :-).");
+				    	db.close();
+					}
+				});
+			}
+		});
+	} catch (e) {
+		console.log("Could not connect to MongoDb " + err);
+	}
 });
 
 module.exports = router;
