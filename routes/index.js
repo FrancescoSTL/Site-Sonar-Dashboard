@@ -31,7 +31,7 @@ router.post('/log', function(req, res) {
 			}
 		});
 	} catch (e) {
-		console.log("Could not connect to MongoDb " + err);
+		console.log("Could not connect to MongoDb " + e);
 	}
 });
 
