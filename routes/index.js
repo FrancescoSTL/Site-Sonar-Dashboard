@@ -15,7 +15,7 @@ router.post('/log', function(req, res) {
 	MongoClient.connect(url, function(err, db) {
 		var benchmarkDB = db.collection('benchmark_logs');
 
-		benchmarkDB.insertMany(assetLoadTimes.assets, function() {
+		benchmarkDB.insertMany(assetLoadTimes, function() {
 			// let the client know we've received their data
   			res.send("Data successfully recieved by Ultra-Lightbeam. Thanks :-).");
 	    	db.close();
