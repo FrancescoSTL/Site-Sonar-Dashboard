@@ -25,15 +25,15 @@ router.post('/log', function(req, res) {
 			} else {
 				var benchmarkDB = db.collection('benchmark_logs');
 
-				benchmarkDB.insertMany(assetLoadTimes).then(function(err, r) {
-					if(err) {
-						console.log("Could not write to databse " + err);
-					} else {
+				try {
+					benchmarkDB.insertMany(assetLoadTimes).then(function(r) {
 						// let the client know we've received their data
-			  			res.send("Data successfully recieved by Ultra-Lightbeam. Thanks :-).");
-				    	db.close();
-					}
-				});
+				  		res.send("Data successfully recieved by Ultra-Lightbeam. Thanks :-).");
+					    db.close();
+					});
+				} catch (e) {
+					console.log("Could not log to database " + e);
+				}
 			}
 		});
 	} catch (e) {
