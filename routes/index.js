@@ -15,12 +15,11 @@ router.post('/log', function(req, res) {
 		var benchmarkDB = db.collection('benchmark_logs');
 
 		benchmarkDB.insertMany(assetLoadTimes.assets, function() {
+			// let the client know we've received their data
+  			res.send("Data successfully recieved by Ultra-Lightbeam. Thanks :-).");
 	    	db.close();
 		});
 	});
-
-	// let the client know we've received their data
-  	res.send("Data successfully recieved by Ultra-Lightbeam. Thanks :-).");
 });
 
 module.exports = router;
