@@ -13,13 +13,21 @@ router.post('/log', function(req, res) {
 	var assetLoadTimes = req.body.assets;
 	console.log(assetLoadTimes);
 	MongoClient.connect(url, function(err, db) {
-		var benchmarkDB = db.collection('benchmark_logs');
+		if(err) {
+			console.log("Could not connect to MongoDb " + err);
+		} else {
+			var benchmarkDB = db.collection('benchmark_logs');
 
-		benchmarkDB.insertMany(assetLoadTimes, function() {
-			// let the client know we've received their data
-  			res.send("Data successfully recieved by Ultra-Lightbeam. Thanks :-).");
-	    	db.close();
-		});
+			benchmarkDB.insertMany(assetLoadTimes).then(function(err, r) {
+				if(err) {
+					console.log("Could not write to databse " + err);
+				} else {
+					// let the client know we've received their data
+		  			res.send("Data successfully recieved by Ultra-Lightbeam. Thanks :-).");
+			    	db.close();
+				}
+			});
+		}
 	});
 });
 
