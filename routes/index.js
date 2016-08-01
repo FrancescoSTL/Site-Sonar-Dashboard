@@ -39,6 +39,56 @@ router.get('/', function(req, res) {
 	}
 });
 
+/* Group by ad networks display. */
+router.get('/groupBy', function(req,res){
+	try{
+		MongoClient.connect(url, function(err, db){
+			var benchmarkDB = db.collection('benchmark_logs');
+			try{
+				benchmarkDB.aggregate(
+					[
+						{
+							$group: {
+								_id : "$adNetworkUrl",
+								avgLoadTime : { $avg : "$assetCompleteTime"}
+							}
+						},
+						{
+							$sort: {
+								avgLoadTime: -1
+							}
+						},
+						{
+							$project:
+							{
+								_id: "$_id",
+								avgLoadTime:
+								{
+									$divide:[
+										{$subtract:[
+											{$multiply:['$avgLoadTime',1000]},
+											{$mod:[{$multiply:['$avgLoadTime',1000]}, 1]}
+										]},
+										1000
+									]
+								}
+							}
+						}
+					]
+				).toArray(function (err, avgLoadTimes){
+					benchmarkDB.find().count(function (err, total) {
+						res.render('groupByAdNets.html', { records : avgLoadTimes.slice(0,99)});
+						db.close();
+					});
+				});
+			} catch (e) {
+				console.log("Could not connect to MongoDb " + e);
+			}
+		});
+	} catch (e) {
+		console.log("Could not connect to MongoDb " + e) ;
+	}
+});
 /* POST for data logging to Mongo */
 router.post('/log', function(req, res) {
 	// TODO: parse data and send to Mongo
