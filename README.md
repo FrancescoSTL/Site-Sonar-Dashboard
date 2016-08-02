@@ -27,3 +27,10 @@ Once you've cloned the repo and installed Node.js, you can start sherlock by run
 You should recieve back the message: `Data successfully recieved by Ultra-Lightbeam. Thanks :-).`
 
 Congrats, you just successfully set up the local version of Ultra-Lightbeam's Dashboard!
+
+## Example API JSON
+
+Want to start writing some dashboards? Below you'll find an example (shortened) JSON object we recieved after one user browsed to cnn.com:
+```
+{"assets":[{"assetCompleteTime":430,"originUrl":"www.cnn.com","adNetworkUrl":"cdn.krxd.net","assetType":"script","fileSize":"16385"},{"assetCompleteTime":456,"originUrl":"www.cnn.com","adNetworkUrl":"ads.rubiconproject.com","assetType":"script","fileSize":"22247"},{"assetCompleteTime":490,"originUrl":"www.cnn.com","adNetworkUrl":"widgets.outbrain.com","assetType":"script","fileSize":"20006"}]}
+```
