@@ -6,7 +6,7 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
-var url = 'mongodb://heroku_803m4q4j:1f1t2tc0ih11omaekmln78tkcn@ds031995.mlab.com:31995/heroku_803m4q4j';
+var url = process.env.MONGODB_URI;
 
 /* GET home page. */
 router.get('/', function(req, res) {
