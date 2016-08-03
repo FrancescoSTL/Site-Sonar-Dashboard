@@ -15,7 +15,7 @@ router.get('/', function(req, res) {
             var benchmarkDB = db.collection('benchmark_logs');
 
             try {
-                benchmarkDB.find().toArray(function(err, assetLoadTimes) {
+                benchmarkDB.find({}, {sort: {timeStamp: -1}}).toArray(function(err, assetLoadTimes) {
                     benchmarkDB.find().count(function (err, total) {
                         var millisecondTotal = 0;
                         for (var record in assetLoadTimes) {
