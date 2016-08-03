@@ -9,6 +9,8 @@ var routes = require('./routes/index');
 
 var app = express();
 
+app.use(express.static('public'));
+
 //Nunjucks setup
 nunjucks.configure('views', {
 	autoescape: true,
