@@ -49,7 +49,7 @@ router.get('/groupByAdHost', function(req,res) {
                     [
                         {
                             $group: {
-                                _id : "$adNetworkUrl",
+                                _id : "$adNetwork",
                                 avgLoadTime : { $avg : "$assetCompleteTime"}
                             }
                         },
@@ -62,6 +62,7 @@ router.get('/groupByAdHost', function(req,res) {
                             $project:
                             {
                                 _id: "$_id",
+                                adNetwork : "$adNetwork",
                                 avgLoadTime:
                                 {
                                     $divide:[
