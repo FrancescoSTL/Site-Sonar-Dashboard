@@ -1,24 +1,36 @@
-<html>
-    <head>
-        <title>You're on the Ultra-Lightbeam</title>
-        <script src="https://d3js.org/d3.v4.min.js"></script>
-    </head>
-    <body>
-    	<h1>We've benchmarked: {{ count }} ads, {{ totalTime }} minutes of load time</h1>
-        <p>Below are to latest 100 ad asset broken down by the url the were requested on, their network, and their load time.</p>
-        <table>
-        	<tr>
-        		<th>Website</th>
-				<th>Ad Network</th>
-				<th>Load Time</th>
-        	</tr>
-        	{% for record in records %}
-	        	<tr>
-	        		<td>{{record.originUrl}}</td>
-					<td>{{record.adNetworkUrl}}</td>
-					<td>{{record.assetCompleteTime}}</td>
-	        	</tr>
-        	{% endfor %}
-        </table>
-    </body>
-</html>
+{% extends "layout.html" %}
+
+{% block sidebar %}
+<li class="active"><a href="/">The Latest 100</a></li>
+<li><a href="/groupByAdHost">Group by Ad Hosts</a></li>
+<li><a href="/recordsbyfilesize">Records by File Size</a></li>
+<li><a href="/networksbyfilesize">Networks by File Size</a></li>
+{% endblock %}
+
+{% block body %}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  <h2 class="sub-header">The Latest 100</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Origin</th>
+          <th>Ad Network</th>
+          <th>Complete Time</th>
+          <th>File Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in records %}
+        <tr>
+          <td>{{record.originUrl}}</td>
+          <td>{{record.adNetwork}}</td>
+          <td>{{record.assetCompleteTime}} ms</td>
+          <td>{{record.fileSize}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
