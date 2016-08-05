@@ -1,12 +1,20 @@
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+
+.row-centered {
+    text-align: center;
+}
+
 .navbar-default {
   background-color: white;
   -webkit-box-shadow: 0px 3px 7px -3px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 3px 7px -3px rgba(0,0,0,0.75);
   box-shadow: 0px 3px 7px -3px rgba(0,0,0,0.75);
-}
-
-.container {
-  width: 100%;
 }
 
 /*
@@ -15,7 +23,25 @@
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
-  padding-top: 50px;
+  padding-top: 20px;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 200;
+  color: #5C5C5C;
+  height: 75%;
+}
+
+h1 {
+  font-weight: 300;
+}
+
+.subheading {
+  font-size: 20px;
+  font-style: italic;
+}
+
+#streaming-now {
+  font-size: 20px;
+  color: #4A90E2;
 }
 
 

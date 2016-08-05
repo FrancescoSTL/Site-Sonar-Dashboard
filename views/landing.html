@@ -41,8 +41,8 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/home">Home</a></li>
-            <li class="active"><a href="/">Dashboard</a></li>
+            <li class="active"><a href="/home">Home</a></li>
+            <li><a href="/">Dashboard</a></li>
             <li><a href="https://github.com/FrancescoSTL/Ultra-Lightbeam">Download</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -50,24 +50,18 @@
     </nav>
 
     <div class="container-fluid">
-
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            {% block sidebar %}
-            <li class="active"><a href="/">The Latest 100</a></li>
-            <li><a href="/timeByAdNetwork">Worst Ad Network Load Time</a></li>
-            <li><a href="/recordsbyfilesize">Records by File Size</a></li>
-            <li><a href="/networksbyfilesize">Networks by File Size</a></li>
-            {% endblock %}
-          </ul>
+      <div class="row row-centered vertical-center">
+        <div class=col-md-4>
         </div>
-        {% block body %}
-        {% endblock %}
+        <div class="col-md-4">
+            <img src="/img/adsareslow.png" width=85%>
+            <h1 style="font-weight:light">Ultra Lightbeam</h1>
+            <p class="subheading">Slow ads are bad.</p>
+            <br>
+            <a href="https://github.com/FrancescoSTL/Ultra-Lightbeam" id="streaming-now">Streaming now on Firefox.</a>
+        </div>
       </div>
-
-    </div> <!-- /container -->
+    </div>
 
 
     <!-- Bootstrap core JavaScript
