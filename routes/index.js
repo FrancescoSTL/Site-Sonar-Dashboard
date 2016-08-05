@@ -8,6 +8,10 @@ var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
 var url = process.env.MONGODB_URI;
 
+router.get('/home', function(req, res) {
+  res.render('landing.html');
+});
+
 /* GET home page. */
 router.get('/', function(req, res) {
     try {
