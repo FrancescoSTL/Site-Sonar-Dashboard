@@ -148,39 +148,26 @@ router.get('/networksbyfilesize', function(req,res) {
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
             try {
-                benchmarkDB.aggregate(
-                    [
-                        {
-                            $group: {
-                                _id : "$adNetworkUrl",
-                                avgLoadTime : { $avg : "$assetCompleteTime"}
-                            }
-                        },
-                        {
-                            $sort: {
-                                avgLoadTime: -1
-                            }
-                        },
-                        {
-                            $project:
-                            {
-                                _id: "$_id",
-                                avgLoadTime:
-                                {
-                                    $divide:[
-                                        {$subtract:[
-                                            {$multiply:['$avgLoadTime',1000]},
-                                            {$mod:[{$multiply:['$avgLoadTime',1000]}, 1]}
-                                        ]},
-                                        1000
-                                    ]
-                                }
-                            }
+                benchmarkDB.aggregate([
+                    {
+                        $match: {
+                            "fileSize" : { "$exists" : true, "$ne": null}
                         }
-                    ]
-                ).toArray(function (err, avgLoadTimes){
+                    },
+                    {
+                        $group: {
+                            _id : "$adNetwork",
+                            fileSize : { $avg : "$fileSize"}
+                        }
+                    },
+                    {
+                        $sort: {
+                            fileSize: -1
+                        }
+                    },
+                ]).toArray(function (err, fileSizes){
                     benchmarkDB.find().count(function (err, total) {
-                        res.render('networksbyfilesize.html', { records : avgLoadTimes.slice(0,99)});
+                        res.render('networksbyfilesize.html', { records : fileSizes.slice(0,99)});
                         db.close();
                     });
                 });
