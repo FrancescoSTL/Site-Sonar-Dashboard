@@ -157,13 +157,23 @@ router.get('/networksbyfilesize', function(req,res) {
                     {
                         $group: {
                             _id : "$adNetwork",
-                            fileSize : { $avg : "$fileSize"}
+                            fileSize : {$avg : "$fileSize"},
                         }
                     },
                     {
                         $sort: {
                             fileSize: -1
                         }
+                    },
+                    {
+                      $project:{
+                          _id:"$_id",
+                          fileSize:{
+                              $divide:[
+                                  "$fileSize", 1024
+                              ]
+                          }
+                      }
                     },
                     {
                         $project:
@@ -173,10 +183,10 @@ router.get('/networksbyfilesize', function(req,res) {
                             {
                                 $divide:[
                                     {$subtract:[
-                                        {$multiply:['$fileSize',1000]},
-                                        {$mod:[{$multiply:['$fileSize',1000]}, 1]}
+                                        {$multiply:["$fileSize",10]},
+                                        {$mod:[{$multiply:["$fileSize",10]}, 1]}
                                     ]},
-                                    1000
+                                    10
                                 ]
                             }
                         }
