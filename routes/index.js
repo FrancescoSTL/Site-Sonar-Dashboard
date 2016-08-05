@@ -148,39 +148,42 @@ router.get('/networksbyfilesize', function(req,res) {
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
             try {
-                benchmarkDB.aggregate(
-                    [
+                benchmarkDB.aggregate([
+                    {
+                        $match: {
+                            "fileSize" : { "$exists" : true, "$ne": null}
+                        }
+                    },
+                    {
+                        $group: {
+                            _id : "$adNetwork",
+                            fileSize : { $avg : "$fileSize"}
+                        }
+                    },
+                    {
+                        $sort: {
+                            fileSize: -1
+                        }
+                    },
+                    {
+                        $project:
                         {
-                            $group: {
-                                _id : "$adNetworkUrl",
-                                avgLoadTime : { $avg : "$assetCompleteTime"}
-                            }
-                        },
-                        {
-                            $sort: {
-                                avgLoadTime: -1
-                            }
-                        },
-                        {
-                            $project:
+                            _id: "$_id",
+                            fileSize:
                             {
-                                _id: "$_id",
-                                avgLoadTime:
-                                {
-                                    $divide:[
-                                        {$subtract:[
-                                            {$multiply:['$avgLoadTime',1000]},
-                                            {$mod:[{$multiply:['$avgLoadTime',1000]}, 1]}
-                                        ]},
-                                        1000
-                                    ]
-                                }
+                                $divide:[
+                                    {$subtract:[
+                                        {$multiply:['$fileSize',1000]},
+                                        {$mod:[{$multiply:['$fileSize',1000]}, 1]}
+                                    ]},
+                                    1000
+                                ]
                             }
                         }
-                    ]
-                ).toArray(function (err, avgLoadTimes){
+                    }
+                ]).toArray(function (err, fileSizes){
                     benchmarkDB.find().count(function (err, total) {
-                        res.render('networksbyfilesize.html', { records : avgLoadTimes.slice(0,99)});
+                        res.render('networksbyfilesize.html', { records : fileSizes.slice(0,99)});
                         db.close();
                     });
                 });
