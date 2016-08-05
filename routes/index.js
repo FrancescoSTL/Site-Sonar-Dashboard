@@ -165,6 +165,22 @@ router.get('/networksbyfilesize', function(req,res) {
                             fileSize: -1
                         }
                     },
+                    {
+                        $project:
+                        {
+                            _id: "$_id",
+                            fileSize:
+                            {
+                                $divide:[
+                                    {$subtract:[
+                                        {$multiply:['$fileSize',1000]},
+                                        {$mod:[{$multiply:['$fileSize',1000]}, 1]}
+                                    ]},
+                                    1000
+                                ]
+                            }
+                        }
+                    }
                 ]).toArray(function (err, fileSizes){
                     benchmarkDB.find().count(function (err, total) {
                         res.render('networksbyfilesize.html', { records : fileSizes.slice(0,99)});
