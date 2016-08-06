@@ -55,7 +55,9 @@ router.get('/timeByAdNetwork', function(req,res) {
                             $group: {
                                 _id : "$adNetwork",
                                 avgLoadTime : { $avg : "$assetCompleteTime"},
-                                low: {}
+                                low: { $min : "$assetCompleteTime"},
+                                high: { $max : "$assetCompleteTime" },
+                                count: { $sum : 1 }
                             }
                         },
                         {
@@ -77,7 +79,26 @@ router.get('/timeByAdNetwork', function(req,res) {
                                         ]},
                                         1000
                                     ]
-                                }
+                                },
+                                low:{
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:['$low',1000]},
+                                            {$mod:[{$multiply:['$low',1000]}, 1]}
+                                        ]},
+                                        1000
+                                    ]
+                                },
+                                high:{
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:['$high',1000]},
+                                            {$mod:[{$multiply:['$high',1000]}, 1]}
+                                        ]},
+                                        1000
+                                    ]
+                                },
+                                count: "$count"
                             }
                         }
                     ]
