@@ -16,6 +16,7 @@
         <tr>
           <th>Ad Network</th>
           <th>Average Load Time</th>
+          <th>Distribution</th>
         </tr>
       </thead>
       <tbody>
@@ -23,6 +24,7 @@
         <tr>
           <td>{{record._id}}</td>
           <td>{{record.avgLoadTime}} ms</td>
+          <td>{{record.low}}-{{record.high}}</td>
         </tr>
         {% endfor %}
       </tbody>

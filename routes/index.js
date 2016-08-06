@@ -54,7 +54,8 @@ router.get('/timeByAdNetwork', function(req,res) {
                         {
                             $group: {
                                 _id : "$adNetwork",
-                                avgLoadTime : { $avg : "$assetCompleteTime"}
+                                avgLoadTime : { $avg : "$assetCompleteTime"},
+                                low: {}
                             }
                         },
                         {
