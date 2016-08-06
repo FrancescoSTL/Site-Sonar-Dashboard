@@ -15,8 +15,6 @@
       <thead>
         <tr>
           <th>Origin</th>
-          <th>Ad Network</th>
-          <th>Complete Time</th>
           <th>File Size</th>
         </tr>
       </thead>
@@ -24,8 +22,6 @@
         {% for record in records %}
         <tr>
           <td>{{record.originUrl}}</td>
-          <td>{{record.adNetwork}}</td>
-          <td>{{record.assetCompleteTime}} ms</td>
           <td>{{record.fileSize}}</td>
         </tr>
         {% endfor %}
