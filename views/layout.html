@@ -33,12 +33,10 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            {% block sidebar %}
-            <li class="active"><a href="/dashboard">The Latest 100</a></li>
-            <li><a href="/timeByAdNetwork">Worst Ad Network Load Time</a></li>
-            <li><a href="/sitesbyfilesize">Sites by File Size</a></li>
-            <li><a href="/networksbyfilesize">Networks by File Size</a></li>
-            {% endblock %}
+            <li id="latest"><a href="/dashboard">The Latest 100</a></li>
+            <li id="worst-load-time"><a href="/timeByAdNetwork">Worst Ad Network Load Time</a></li>
+            <li id="sites-by-file-size"><a href="/sitesbyfilesize">Records by File Size</a></li>
+            <li id="networks-by-file-size"><a href="/networksbyfilesize">Networks by File Size</a></li>
           </ul>
         </div>
         {% block body %}
@@ -46,5 +44,13 @@
       </div>
 
     </div> <!-- /container -->
+
+    <script
+			  src="http://code.jquery.com/jquery-3.1.0.min.js"
+			  integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
+			  crossorigin="anonymous"></script>
+
+    {% block scripts %}
+    {% endblock %}
   </body>
 </html>

@@ -1,12 +1,5 @@
 {% extends "layout.html" %}
 
-{% block sidebar %}
-<li><a href="/dashboard">The Latest 100</a></li>
-<li><a href="/timeByAdNetwork">Worst Ad Network Load Time</a></li>
-<li class="active"><a href="/sitesbyfilesize">Sites by File Size</a></li>
-<li><a href="/networksbyfilesize">Networks by File Size</a></li>
-{% endblock %}
-
 {% block body %}
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
   <h2 class="sub-header">The Latest 100</h2>
@@ -29,4 +22,10 @@
     </table>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $('#sites-by-file-size').addClass('active');
+</script>
 {% endblock %}
