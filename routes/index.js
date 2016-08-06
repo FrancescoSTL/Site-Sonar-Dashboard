@@ -96,44 +96,57 @@ router.get('/timeByAdNetwork', function(req,res) {
 });
 
 /* Group by ad networks display. */
-router.get('/recordsbyfilesize', function(req,res) {
+router.get('/sitesbyfilesize', function(req,res) {
     try {
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
             try {
-                benchmarkDB.aggregate(
-                    [
-                        {
-                            $group: {
-                                _id : "$adNetworkUrl",
-                                avgLoadTime : { $avg : "$assetCompleteTime"}
-                            }
-                        },
-                        {
-                            $sort: {
-                                avgLoadTime: -1
-                            }
-                        },
-                        {
-                            $project:
-                            {
-                                _id: "$_id",
-                                avgLoadTime:
-                                {
-                                    $divide:[
-                                        {$subtract:[
-                                            {$multiply:['$avgLoadTime',1000]},
-                                            {$mod:[{$multiply:['$avgLoadTime',1000]}, 1]}
-                                        ]},
-                                        1000
-                                    ]
-                                }
+                benchmarkDB.aggregate([
+                    {
+                        $match: {
+                            "fileSize" : { "$exists" : true, "$ne": null}
+                        }
+                    },
+                    {
+                        $group: {
+                            _id : "$originUrl",
+                            fileSize : {$avg : "$fileSize"}
+                        }
+                    },
+                    {
+                        $sort: {
+                            fileSize: -1
+                        }
+                    },
+                    {
+                        $project:{
+                            _id:"$_id",
+                            fileSize:{
+                                $divide:[
+                                    "$fileSize", 1024
+                                ]
                             }
                         }
-                    ]
-                ).toArray(function (err, avgLoadTimes){
+                    },
+                    {
+                        $project:
+                        {
+                            _id: "$_id",
+                            fileSize:
+                            {
+                                $divide:[
+                                    {$subtract:[
+                                        {$multiply:["$fileSize",10]},
+                                        {$mod:[{$multiply:["$fileSize",10]}, 1]}
+                                    ]},
+                                    10
+                                ]
+                            }
+                        }
+                    }
+                ]).toArray(function (err, avgLoadTimes){
                     benchmarkDB.find().count(function (err, total) {
-                        res.render('recordsbyfilesize.html', { records : avgLoadTimes.slice(0,99)});
+                        res.render('sitesbyfilesize.html', { records : avgLoadTimes.slice(0,99)});
                         db.close();
                     });
                 });
