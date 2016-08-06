@@ -157,7 +157,7 @@ router.get('/networksbyfilesize', function(req,res) {
                     {
                         $group: {
                             _id : "$adNetwork",
-                            fileSize : {$avg : "$fileSize"},
+                            fileSize : {$avg : "$fileSize"}
                         }
                     },
                     {
