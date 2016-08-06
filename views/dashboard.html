@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block sidebar %}
+<li class="active"><a href="/">The Latest 100</a></li>
+<li><a href="/timeByAdNetwork">Worst Ad Network Load Time</a></li>
+<li><a href="/recordsbyfilesize">Records by File Size</a></li>
+<li><a href="/networksbyfilesize">Networks by File Size</a></li>
+{% endblock %}
+
+{% block body %}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  <h2 class="sub-header">The Latest 100</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Origin</th>
+          <th>Ad Network</th>
+          <th>Status Code</th>
+          <th>File Type</th>
+          <th>Complete Time</th>
+          <th>File Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in records %}
+        <tr>
+          <td>{{record.originUrl}}</td>
+          <td>{{record.adNetwork}}</td>
+          <td>{{record.statusCode}}</td>
+          <td>{{record.assetType}}</td>
+          <td>{{record.assetCompleteTime}} ms</td>
+          <td>{{record.fileSize}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
