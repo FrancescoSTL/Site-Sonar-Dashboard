@@ -34,23 +34,35 @@ Want to start writing some dashboards? Below you'll find an example (shortened) 
 ```
 {
 	"assets": [{
-		"assetCompleteTime": 430,
-		"originUrl": "www.cnn.com",
-		"adNetworkUrl": "cdn.krxd.net",
+		assetCompleteTime": 315,
+		"originUrl": "www.mlab.com",
+		"adNetworkUrl": "ssl.google-analytics.com",
 		"assetType": "script",
-		"fileSize": "16385"
+		"fileSize": "16022",
+		"timeStamp": 1470369858230,
+		"method": "GET",
+		"statusCode": 200,
+		"adNetwork": "Google"
 	}, {
-		"assetCompleteTime": 456,
-		"originUrl": "www.cnn.com",
-		"adNetworkUrl": "ads.rubiconproject.com",
-		"assetType": "script",
-		"fileSize": "22247"
+		"assetCompleteTime": 69,
+		"originUrl": "github.com",
+		"adNetworkUrl": "www.google-analytics.com",
+		"assetType": "xmlhttprequest",
+		"fileSize": "35",
+		"timeStamp": 1470369918414,
+		"method": "POST",
+		"statusCode": 200,
+		"adNetwork": "Google"
 	}, {
-		"assetCompleteTime": 490,
-		"originUrl": "www.cnn.com",
-		"adNetworkUrl": "widgets.outbrain.com",
-		"assetType": "script",
-		"fileSize": "20006"
+		"assetCompleteTime": 125,
+		"originUrl": "www.youtube.com",
+		"adNetworkUrl": "googleads.g.doubleclick.net",
+		"assetType": "xmlhttprequest",
+		"fileSize": "133",
+		"timeStamp": 1470421355148,
+		"method": "GET",
+		"statusCode": 200,
+		"adNetwork": "Google"
 	}]
 }
 ```
