@@ -3,7 +3,7 @@
 {% block sidebar %}
 <li><a href="/dashboard">The Latest 100</a></li>
 <li><a href="/timeByAdNetwork">Worst Ad Network Load Time</a></li>
-<li class="active"><a href="/recordsbyfilesize">Records by File Size</a></li>
+<li class="active"><a href="/sitesbyfilesize">Records by File Size</a></li>
 <li><a href="/networksbyfilesize">Networks by File Size</a></li>
 {% endblock %}
 
@@ -21,8 +21,8 @@
       <tbody>
         {% for record in records %}
         <tr>
-          <td>{{record.originUrl}}</td>
-          <td>{{record.fileSize}}</td>
+          <td>{{record._id}}</td>
+          <td>{{record.fileSize}} KB</td>
         </tr>
         {% endfor %}
       </tbody>
