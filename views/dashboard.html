@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 
 {% block sidebar %}
-<li><a href="/dashboard">The Latest 100</a></li>
-<li class="active"><a href="/timeByAdNetwork">Worst Ad Network Load Time</a></li>
+<li class="active"><a href="/dashboard">The Latest 100</a></li>
+<li><a href="/timeByAdNetwork">Worst Ad Network Load Time</a></li>
 <li><a href="/recordsbyfilesize">Records by File Size</a></li>
 <li><a href="/networksbyfilesize">Networks by File Size</a></li>
 {% endblock %}
@@ -14,15 +14,23 @@
     <table class="table table-striped">
       <thead>
         <tr>
+          <th>Origin</th>
           <th>Ad Network</th>
-          <th>Average Load Time</th>
+          <th>Status Code</th>
+          <th>File Type</th>
+          <th>Complete Time</th>
+          <th>File Size</th>
         </tr>
       </thead>
       <tbody>
         {% for record in records %}
         <tr>
-          <td>{{record._id}}</td>
-          <td>{{record.avgLoadTime}} ms</td>
+          <td>{{record.originUrl}}</td>
+          <td>{{record.adNetwork}}</td>
+          <td>{{record.statusCode}}</td>
+          <td>{{record.assetType}}</td>
+          <td>{{record.assetCompleteTime}} ms</td>
+          <td>{{record.fileSize}}</td>
         </tr>
         {% endfor %}
       </tbody>

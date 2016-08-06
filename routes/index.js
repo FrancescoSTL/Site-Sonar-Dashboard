@@ -8,8 +8,12 @@ var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
 var url = process.env.MONGODB_URI;
 
-/* GET home page. */
 router.get('/', function(req, res) {
+  res.render('index.html');
+});
+
+/* GET home page. */
+router.get('/dashboard', function(req, res) {
     try {
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
@@ -25,7 +29,7 @@ router.get('/', function(req, res) {
                         // calculate our total processing time in minutes, and round to 2 decimal places
                         var minutesTotal = Math.round((millisecondTotal * .000016667) * 100) / 100;
 
-                        res.render('index.html', { records : assetLoadTimes.slice(0,99), count: total, totalTime: minutesTotal});
+                        res.render('dashboard.html', { records : assetLoadTimes.slice(0,99), count: total, totalTime: minutesTotal});
 
                         db.close();
                     });
