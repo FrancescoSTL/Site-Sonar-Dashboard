@@ -1,40 +1,44 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% block sidebar %}
-<li class="active"><a href="/">The Latest 100</a></li>
-<li><a href="/timeByAdNetwork">Worst Ad Network Load Time</a></li>
-<li><a href="/recordsbyfilesize">Records by File Size</a></li>
-<li><a href="/networksbyfilesize">Networks by File Size</a></li>
-{% endblock %}
+    <title>Ultra-Lightbeam Dashboard</title>
 
-{% block body %}
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-  <h2 class="sub-header">The Latest 100</h2>
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Origin</th>
-          <th>Ad Network</th>
-          <th>Status Code</th>
-          <th>File Type</th>
-          <th>Complete Time</th>
-          <th>File Size</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for record in records %}
-        <tr>
-          <td>{{record.originUrl}}</td>
-          <td>{{record.adNetwork}}</td>
-          <td>{{record.statusCode}}</td>
-          <td>{{record.assetType}}</td>
-          <td>{{record.assetCompleteTime}} ms</td>
-          <td>{{record.fileSize}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
-{% endblock %}
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Ultra-Lightbeam</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/home">Home</a></li>
+          <li><a href="/dashboard">Dashboard</a></li>
+          <li><a href="https://github.com/FrancescoSTL/Ultra-Lightbeam">Download</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row row-centered vertical-center">
+        <div class=col-md-4>
+        </div>
+        <div class="col-md-4">
+            <a href="#"><img src="/img/adsareslow.png" width=85%></a>
+            <h1 style="font-weight:light">Ultra Lightbeam</h1>
+            <p class="subheading">Slow ads are bad.</p>
+            <br>
+            <a href="https://github.com/FrancescoSTL/Ultra-Lightbeam" id="streaming-now">Streaming now on Firefox.</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

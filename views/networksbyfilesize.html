@@ -1,32 +1,53 @@
 {% extends "layout.html" %}
 
-{% block sidebar %}
-<li><a href="/">The Latest 100</a></li>
-<li><a href="/timeByAdNetwork">Worst Ad Network Load Time</a></li>
-<li><a href="/recordsbyfilesize">Records by File Size</a></li>
-<li class="active"><a href="/networksbyfilesize">Networks by File Size</a></li>
-{% endblock %}
-
 {% block body %}
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-  <h2 class="sub-header">The Latest 100</h2>
+  <h2 class="sub-header">Networks by File Size</h2>
   <div class="table-responsive">
     <table class="table table-striped">
       <thead>
         <tr>
           <th>Ad Network</th>
           <th>Average File Size</th>
+          <th>Distribution</th>
+          <th>Count</th>
         </tr>
       </thead>
       <tbody>
-        {% for record in records %}
-        <tr>
-          <td>{{record._id}}</td>
-          <td>{{record.fileSize}} KB</td>
-        </tr>
-        {% endfor %}
+      {% for record in records %}
+      <tr>
+        <td>{{record._id}}</td>
+        <td>
+          {% if record.fileSize/1024<1 %}
+          {{record.fileSize}} Bytes
+          {% else %}
+          {{(record.fileSize/1024)|round|int}} KB
+          {% endif %}
+        </td>
+        <td>
+          {% if record.low/1024<1%}
+          {{record.low}} Bytes
+          {% else %}
+          {{ (record.low/1024)|round|int }} KB
+          {% endif %}
+          -
+          {% if record.high/1024<1 %}
+          {{record.high}} Bytes
+          {% else %}
+          {{(record.high/1024)|round|int}} KB
+          {% endif %}
+        </td>
+        <td>{{record.count}}</td>
+      </tr>
+      {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $('#networks-by-file-size').addClass('active');
+</script>
 {% endblock %}
