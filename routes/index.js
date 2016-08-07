@@ -132,22 +132,15 @@ router.get('/sitesbyfilesize', function(req,res) {
                     {
                         $group: {
                             _id : "$originUrl",
-                            fileSize : {$avg : "$fileSize"}
+                            fileSize : {$avg : "$fileSize"},
+                            low: { $min : "$fileSize"},
+                            high: { $max : "$fileSize"},
+                            count: { $sum : 1}
                         }
                     },
                     {
                         $sort: {
                             fileSize: -1
-                        }
-                    },
-                    {
-                        $project:{
-                            _id:"$_id",
-                            fileSize:{
-                                $divide:[
-                                    "$fileSize", 1024
-                                ]
-                            }
                         }
                     },
                     {
@@ -163,7 +156,26 @@ router.get('/sitesbyfilesize', function(req,res) {
                                     ]},
                                     10
                                 ]
-                            }
+                            },
+                            low:{
+                                $divide:[
+                                    {$subtract:[
+                                        {$multiply:["$low",10]},
+                                        {$mod:[{$multiply:["$low",10]}, 1]}
+                                    ]},
+                                    10
+                                ]
+                            },
+                            high:{
+                                $divide:[
+                                    {$subtract:[
+                                        {$multiply:["$high",10]},
+                                        {$mod:[{$multiply:["$high",10]}, 1]}
+                                    ]},
+                                    10
+                                ]
+                            },
+                            count:"$count"
                         }
                     }
                 ]).toArray(function (err, avgLoadTimes){
@@ -196,23 +208,16 @@ router.get('/networksbyfilesize', function(req,res) {
                     {
                         $group: {
                             _id : "$adNetwork",
-                            fileSize : {$avg : "$fileSize"}
+                            fileSize : {$avg : "$fileSize"},
+                            low : { $min : "$fileSize"},
+                            high : { $max : "$fileSize"},
+                            count : { $sum : 1 }
                         }
                     },
                     {
                         $sort: {
                             fileSize: -1
                         }
-                    },
-                    {
-                      $project:{
-                          _id:"$_id",
-                          fileSize:{
-                              $divide:[
-                                  "$fileSize", 1024
-                              ]
-                          }
-                      }
                     },
                     {
                         $project:
@@ -227,7 +232,27 @@ router.get('/networksbyfilesize', function(req,res) {
                                     ]},
                                     10
                                 ]
-                            }
+                            },
+                            low:{
+                                $divide:[
+                                    {$subtract:[
+                                        {$multiply:["$low",10]},
+                                        {$mod:[{$multiply:["$low",10]}, 1]}
+                                    ]},
+                                    10
+                                ]
+                            },
+                            high:{
+                                $divide:[
+                                    {$subtract:[
+                                        {$multiply:["$high",10]},
+                                        {$mod:[{$multiply:["$high",10]}, 1]}
+                                    ]},
+                                    10
+                                ]
+                            },
+                            count:"$count"
+
                         }
                     }
                 ]).toArray(function (err, fileSizes){
