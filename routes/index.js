@@ -43,7 +43,7 @@ router.get('/dashboard', function(req, res) {
     }
 });
 
-/* Group by ad networks display. */
+/* Group ad networks by average load time. */
 router.get('/networksbyloadtime', function(req,res) {
     try {
         MongoClient.connect(url, function(err, db) {
@@ -117,7 +117,80 @@ router.get('/networksbyloadtime', function(req,res) {
     }
 });
 
-/* Group by ad networks display. */
+/* Group origin urls by average load time. */
+router.get('/sitesbyloadtime', function(req,res) {
+    try {
+        MongoClient.connect(url, function(err, db) {
+            var benchmarkDB = db.collection('benchmark_logs');
+            try {
+                benchmarkDB.aggregate(
+                    [
+                        {
+                            $group: {
+                                _id : "$originUrl",
+                                avgLoadTime : { $avg : "$assetCompleteTime"},
+                                low: { $min : "$assetCompleteTime"},
+                                high: { $max : "$assetCompleteTime" },
+                                count: { $sum : 1 }
+                            }
+                        },
+                        {
+                            $sort: {
+                                avgLoadTime: -1
+                            }
+                        },
+                        {
+                            $project:
+                            {
+                                _id: "$_id",
+                                originUrl : "$originUrl",
+                                avgLoadTime:
+                                {
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:['$avgLoadTime',1000]},
+                                            {$mod:[{$multiply:['$avgLoadTime',1000]}, 1]}
+                                        ]},
+                                        1000
+                                    ]
+                                },
+                                low:{
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:['$low',1000]},
+                                            {$mod:[{$multiply:['$low',1000]}, 1]}
+                                        ]},
+                                        1000
+                                    ]
+                                },
+                                high:{
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:['$high',1000]},
+                                            {$mod:[{$multiply:['$high',1000]}, 1]}
+                                        ]},
+                                        1000
+                                    ]
+                                },
+                                count: "$count"
+                            }
+                        }
+                    ]
+                ).toArray(function (err, avgLoadTimes){
+                    benchmarkDB.find().count(function (err, total) {
+                        res.render('sitesbyloadtime.html', { records : avgLoadTimes.slice(0,99)});
+                        db.close();
+                    });
+                });
+            } catch (e) {
+                console.log("Could not connect to MongoDb " + e);
+            }
+        });
+    } catch (e) {
+        console.log("Could not connect to MongoDb " + e) ;
+    }
+});
+/* Group origin urls by average file sizes. */
 router.get('/sitesbyfilesize', function(req,res) {
     try {
         MongoClient.connect(url, function(err, db) {
@@ -193,7 +266,7 @@ router.get('/sitesbyfilesize', function(req,res) {
     }
 });
 
-/* Group by ad networks display. */
+/* Group ad networks by average file sizes. */
 router.get('/networksbyfilesize', function(req,res) {
     try {
         MongoClient.connect(url, function(err, db) {
