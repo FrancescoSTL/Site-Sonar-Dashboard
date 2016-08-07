@@ -7,7 +7,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Origin</th>
+          <th>Website</th>
           <th>Ad Network</th>
           <th>Status Code</th>
           <th>File Type</th>
@@ -18,7 +18,7 @@
       <tbody>
         {% for record in records %}
         <tr>
-          <td>{{record.originUrl}}</td>
+          <td>{{record.hostUrl}}</td>
           <td>{{record.adNetwork}}</td>
           <td>{{record.statusCode}}</td>
           <td>{{record.assetType}}</td>
