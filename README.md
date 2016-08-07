@@ -70,8 +70,10 @@ Want to start writing some dashboards? Below you'll find an example (shortened) 
 }
 ```
 
-1. **assetCompleteTime**: 
+1. **assetCompleteTime**
+
 ⋅⋅⋅ `Integer` Amount of time (in milliseconds) that the network took to respond to the HTTP request for the asset. This is calculated using a time diff between [onSendHeaders](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/onSendHeaders) and [onHeadersReceived](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/onHeadersReceived).
+
 2. **originUrl** (`String`): 
 ⋅⋅* The URL from which the HTTP request originated. In many cases, this will be the hostUrl, however, sometimes ads will trigger their own HTTP requests. For example, checkout the following example from some real world data we pulled in [Ultra-Lightbeam Issue #17](https://github.com/FrancescoSTL/Ultra-Lightbeam/issues/17#issue-168984693)
 3. **hostUrl** (`String`): 
