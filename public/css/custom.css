@@ -6,10 +6,6 @@
   align-items: center;
 }
 
-.row-centered {
-    text-align: center;
-}
-
 .navbar-default {
   background-color: white;
   -webkit-box-shadow: 0px 3px 7px -3px rgba(0,0,0,0.75);
@@ -17,8 +13,23 @@
   box-shadow: 0px 3px 7px -3px rgba(0,0,0,0.75);
 }
 
+.navbar-default .navbar-brand {
+  color: #9c56b8;
+}
+
 .container-fluid {
   padding-top: 25px;
+}
+
+.btn-download {
+  background-color: white;
+  color: #9c56b8;
+  border-color: #9c56b8;
+}
+
+.btn-download:hover {
+  color: #7a4390;
+  border-color: #7a4390;
 }
 
 /*
@@ -36,10 +47,12 @@ body {
 
 h1 {
   font-weight: 300;
+  font-size: 72px;
+  color: #9c56b8;
 }
 
 .subheading {
-  font-size: 20px;
+  font-size: 30px;
   font-style: italic;
 }
 
