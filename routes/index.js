@@ -44,7 +44,7 @@ router.get('/dashboard', function(req, res) {
 });
 
 /* Group by ad networks display. */
-router.get('/timeByAdNetwork', function(req,res) {
+router.get('/networksbyloadtime', function(req,res) {
     try {
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
@@ -82,7 +82,7 @@ router.get('/timeByAdNetwork', function(req,res) {
                     ]
                 ).toArray(function (err, avgLoadTimes){
                     benchmarkDB.find().count(function (err, total) {
-                        res.render('timeByAdNetwork.html', { records : avgLoadTimes.slice(0,99)});
+                        res.render('networksbyloadtime.html', { records : avgLoadTimes.slice(0,99)});
                         db.close();
                     });
                 });
