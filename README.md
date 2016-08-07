@@ -71,7 +71,7 @@ Want to start writing some dashboards? Below you'll find an example (shortened) 
 ```
 
 1. **assetCompleteTime**
-
+⋅⋅* Unordered sub-list. 
 ⋅⋅⋅ `Integer` Amount of time (in milliseconds) that the network took to respond to the HTTP request for the asset. This is calculated using a time diff between [onSendHeaders](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/onSendHeaders) and [onHeadersReceived](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/onHeadersReceived).
 
 2. **originUrl** (`String`): 
