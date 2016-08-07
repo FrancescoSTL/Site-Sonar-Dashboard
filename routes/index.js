@@ -117,7 +117,7 @@ router.get('/networksbyloadtime', function(req,res) {
     }
 });
 
-/* Group origin urls by average load time. */
+/* Group host urls by average load time. */
 router.get('/sitesbyloadtime', function(req,res) {
     try {
         MongoClient.connect(url, function(err, db) {
@@ -127,7 +127,7 @@ router.get('/sitesbyloadtime', function(req,res) {
                     [
                         {
                             $group: {
-                                _id : "$originUrl",
+                                _id : "$hostUrl",
                                 avgLoadTime : { $avg : "$assetCompleteTime"},
                                 low: { $min : "$assetCompleteTime"},
                                 high: { $max : "$assetCompleteTime" },
@@ -143,7 +143,7 @@ router.get('/sitesbyloadtime', function(req,res) {
                             $project:
                             {
                                 _id: "$_id",
-                                originUrl : "$originUrl",
+                                hostUrl : "$hostUrl",
                                 avgLoadTime:
                                 {
                                     $divide:[
@@ -190,7 +190,7 @@ router.get('/sitesbyloadtime', function(req,res) {
         console.log("Could not connect to MongoDb " + e) ;
     }
 });
-/* Group origin urls by average file sizes. */
+/* Group host urls by average file sizes. */
 router.get('/sitesbyfilesize', function(req,res) {
     try {
         MongoClient.connect(url, function(err, db) {
@@ -204,7 +204,7 @@ router.get('/sitesbyfilesize', function(req,res) {
                     },
                     {
                         $group: {
-                            _id : "$originUrl",
+                            _id : "$hostUrl",
                             fileSize : {$avg : "$fileSize"},
                             low: { $min : "$fileSize"},
                             high: { $max : "$fileSize"},
