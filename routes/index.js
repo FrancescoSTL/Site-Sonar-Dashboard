@@ -7,6 +7,10 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
 var url = process.env.MONGODB_URI;
+var flip_nblt = 1;
+var flip_nbfs = 1;
+var flip_sbfs = 1;
+var flip_sblt = 1;
 
 router.get('/', function(req, res) {
   res.render('index.html');
@@ -45,6 +49,13 @@ router.get('/dashboard', function(req, res) {
 
 /* Group ad networks by average load time. */
 router.get('/networksbyloadtime', function(req,res) {
+
+    var sort = -1;
+    if (req.query.sort){
+        sort = flip_nblt == 1 ? -1 : 1;
+    }
+
+    flip_nblt = sort;
     try {
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
@@ -62,7 +73,7 @@ router.get('/networksbyloadtime', function(req,res) {
                         },
                         {
                             $sort: {
-                                avgLoadTime: -1
+                                avgLoadTime: sort
                             }
                         },
                         {
@@ -119,6 +130,12 @@ router.get('/networksbyloadtime', function(req,res) {
 
 /* Group host urls by average load time. */
 router.get('/sitesbyloadtime', function(req,res) {
+
+    var sort = -1;
+    if (req.query.sort){
+        sort = flip_sblt == 1 ? -1 : 1;
+    }
+    flip_sblt = sort;
     try {
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
@@ -136,7 +153,7 @@ router.get('/sitesbyloadtime', function(req,res) {
                         },
                         {
                             $sort: {
-                                avgLoadTime: -1
+                                avgLoadTime: sort
                             }
                         },
                         {
@@ -192,6 +209,12 @@ router.get('/sitesbyloadtime', function(req,res) {
 });
 /* Group host urls by average file sizes. */
 router.get('/sitesbyfilesize', function(req,res) {
+
+    var sort = -1;
+    if (req.query.sort) {
+        sort = flip_sbfs == 1 ? -1 : 1;
+    }
+    flip_sbfs = sort;
     try {
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
@@ -213,7 +236,7 @@ router.get('/sitesbyfilesize', function(req,res) {
                     },
                     {
                         $sort: {
-                            fileSize: -1
+                            fileSize: sort
                         }
                     },
                     {
@@ -268,6 +291,12 @@ router.get('/sitesbyfilesize', function(req,res) {
 
 /* Group ad networks by average file sizes. */
 router.get('/networksbyfilesize', function(req,res) {
+
+    var sort = -1;
+    if (req.query.sort) {
+        sort = flip_nbfs == 1 ? -1 : 1;
+    }
+    flip_nbfs = sort;
     try {
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
@@ -289,7 +318,7 @@ router.get('/networksbyfilesize', function(req,res) {
                     },
                     {
                         $sort: {
-                            fileSize: -1
+                            fileSize: sort
                         }
                     },
                     {
