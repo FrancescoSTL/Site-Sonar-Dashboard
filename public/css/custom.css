@@ -1,3 +1,14 @@
+@media screen and (max-width: 600px) {
+ #desktop-icon {
+ visibility: hidden;
+ clear: both;
+ float: left;
+ margin: 10px auto 5px 20px;
+ display: none;
+ }
+}
+
+
 .vertical-center {
   min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
   min-height: 100vh; /* These two lines are counted as one :-)       */

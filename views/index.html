@@ -16,6 +16,12 @@
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
         <a class="navbar-brand" href="/">Ultra-Lightbeam</a>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
@@ -34,7 +40,9 @@
           <p class="subheading">Browse the web, help us collect data, keep ad networks accountable.</p>
           <a href="https://github.com/FrancescoSTL/Ultra-Lightbeam" class="btn btn-download btn-lg">Download</a>
         </div>
-        <div class="col-md-5"><img src="/img/desktop-icon.gif" width="70%"></div>
+        <div class="col-md-5" id="desktop-icon">
+          <img src="/img/desktop-icon.gif" width="70%">
+        </div>
       </div>
     </div>
 
@@ -55,7 +63,7 @@
               <li><a href="https://github.com/FrancescoSTL/Ultra-Lightbeam"><span class="emphasis">Download</span></a> Ultra Lightbeam in Firefox.</li>
               <li><span class="emphasis">Browse</span> the web.</li>
               <li>We silently benchmark sites while you browse.</li>
-              <li><span class="emphasis">View</span> data on our dashboard.</li>
+              <li><a href="/dashboard"><span class="emphasis">View</span></a> data on our dashboard.</li>
             </ol>
           </div>
         </div>
@@ -67,22 +75,28 @@
         <p class="subheading subheading-light">Who are we?</p>
         <br>
         <div class="row">
-          <div class="col-md-4">
-            <a href="https://github.com/justinpotts/">
+          <div class="col-md-3">
+            <a href="https://twitter.com/PottsJustin/">
               <img src="/img/justinpotts.jpg" class="img-thumbnail" alt="Justin Potts" width="120" height="120">
               <p class="img-caption">Justin Potts<p>
             </a>
           </div>
-          <div class="col-md-4">
-            <a href="https://github.com/FrancescoSTL">
+          <div class="col-md-3">
+            <a href="http://francesco.tech/">
               <img src="/img/francescopolizzi.jpg" class="img-thumbnail" alt="Francesco Polizzi" width="120" height="120">
               <p class="img-caption">Francesco Polizzi</p>
             </a>
           </div>
-          <div class="col-md-4">
-            <a href="https://github.com/purukaushik">
+          <div class="col-md-3">
+            <a href="https://www.linkedin.com/in/purukaushik">
               <img src="/img/purushswaminathan.jpg" class="img-thumbnail" alt="Purush Swaminathan" width="120" height="120">
               <p class="img-caption">Purush Swaminathan</p>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="https://asadotzler.com/">
+              <img src="/img/asadotzler.jpeg" class="img-thumbnail" alt="Asa Dotzler" width="120" height="120">
+              <p class="img-caption">Asa Dotzler</p>
             </a>
           </div>
         </div>
@@ -95,6 +109,7 @@
         &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
         <a href="https://github.com/FrancescoSTL/Ultra-Lightbeam">Download</a>
     </div>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
   </body>
 </html>
