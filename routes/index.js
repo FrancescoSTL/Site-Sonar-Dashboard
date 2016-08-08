@@ -1,7 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var router = express.Router();
-var urllib = require('url');
 
 /* Import Mongo Dependencies */
 var MongoClient = require('mongodb').MongoClient;
@@ -50,10 +49,11 @@ router.get('/dashboard', function(req, res) {
 
 /* Group ad networks by average load time. */
 router.get('/networksbyloadtime', function(req,res) {
-    var url_parts = urllib.parse(req.url, true);
-    var query = url_parts.query;
+
     var sort = -1;
-    if (query['sort']) sort = flip_nblt == 1 ? -1 : 1;
+    if (req.query.sort){
+        sort = flip_nblt == 1 ? -1 : 1;
+    }
 
     flip_nblt = sort;
     try {
@@ -130,10 +130,11 @@ router.get('/networksbyloadtime', function(req,res) {
 
 /* Group host urls by average load time. */
 router.get('/sitesbyloadtime', function(req,res) {
-    var url_parts = urllib.parse(req.url, true);
-    var query = url_parts.query;
+
     var sort = -1;
-    if (query['sort']) sort = flip_sblt == 1 ? -1 : 1;
+    if (req.query.sort){
+        sort = flip_sblt == 1 ? -1 : 1;
+    }
     flip_sblt = sort;
     try {
         MongoClient.connect(url, function(err, db) {
@@ -208,10 +209,11 @@ router.get('/sitesbyloadtime', function(req,res) {
 });
 /* Group host urls by average file sizes. */
 router.get('/sitesbyfilesize', function(req,res) {
-    var url_parts = urllib.parse(req.url, true);
-    var query = url_parts.query;
+
     var sort = -1;
-    if (query['sort']) sort = flip_sbfs == 1 ? -1 : 1;
+    if (req.query.sort) {
+        sort = flip_sbfs == 1 ? -1 : 1;
+    }
     flip_sbfs = sort;
     try {
         MongoClient.connect(url, function(err, db) {
@@ -289,10 +291,11 @@ router.get('/sitesbyfilesize', function(req,res) {
 
 /* Group ad networks by average file sizes. */
 router.get('/networksbyfilesize', function(req,res) {
-    var url_parts = urllib.parse(req.url, true);
-    var query = url_parts.query;
+
     var sort = -1;
-    if (query['sort']) sort = flip_nbfs == 1 ? -1 : 1;
+    if (req.query.sort) {
+        sort = flip_nbfs == 1 ? -1 : 1;
+    }
     flip_nbfs = sort;
     try {
         MongoClient.connect(url, function(err, db) {
