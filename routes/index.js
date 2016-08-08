@@ -7,6 +7,10 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
 var url = process.env.MONGODB_URI;
+var flip_nblt = 1;
+var flip_nbfs = 1;
+var flip_sbfs = 1;
+var flip_sblt = 1;
 
 router.get('/', function(req, res) {
   res.render('index.html');
@@ -43,8 +47,15 @@ router.get('/dashboard', function(req, res) {
     }
 });
 
-/* Group by ad networks display. */
+/* Group ad networks by average load time. */
 router.get('/networksbyloadtime', function(req,res) {
+
+    var sort = -1;
+    if (req.query.sort){
+        sort = flip_nblt == 1 ? -1 : 1;
+    }
+
+    flip_nblt = sort;
     try {
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
@@ -54,12 +65,15 @@ router.get('/networksbyloadtime', function(req,res) {
                         {
                             $group: {
                                 _id : "$adNetwork",
-                                avgLoadTime : { $avg : "$assetCompleteTime"}
+                                avgLoadTime : { $avg : "$assetCompleteTime"},
+                                low: { $min : "$assetCompleteTime"},
+                                high: { $max : "$assetCompleteTime" },
+                                count: { $sum : 1 }
                             }
                         },
                         {
                             $sort: {
-                                avgLoadTime: -1
+                                avgLoadTime: sort
                             }
                         },
                         {
@@ -76,7 +90,26 @@ router.get('/networksbyloadtime', function(req,res) {
                                         ]},
                                         1000
                                     ]
-                                }
+                                },
+                                low:{
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:['$low',1000]},
+                                            {$mod:[{$multiply:['$low',1000]}, 1]}
+                                        ]},
+                                        1000
+                                    ]
+                                },
+                                high:{
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:['$high',1000]},
+                                            {$mod:[{$multiply:['$high',1000]}, 1]}
+                                        ]},
+                                        1000
+                                    ]
+                                },
+                                count: "$count"
                             }
                         }
                     ]
@@ -95,8 +128,93 @@ router.get('/networksbyloadtime', function(req,res) {
     }
 });
 
-/* Group by ad networks display. */
+/* Group host urls by average load time. */
+router.get('/sitesbyloadtime', function(req,res) {
+
+    var sort = -1;
+    if (req.query.sort){
+        sort = flip_sblt == 1 ? -1 : 1;
+    }
+    flip_sblt = sort;
+    try {
+        MongoClient.connect(url, function(err, db) {
+            var benchmarkDB = db.collection('benchmark_logs');
+            try {
+                benchmarkDB.aggregate(
+                    [
+                        {
+                            $group: {
+                                _id : "$hostUrl",
+                                avgLoadTime : { $avg : "$assetCompleteTime"},
+                                low: { $min : "$assetCompleteTime"},
+                                high: { $max : "$assetCompleteTime" },
+                                count: { $sum : 1 }
+                            }
+                        },
+                        {
+                            $sort: {
+                                avgLoadTime: sort
+                            }
+                        },
+                        {
+                            $project:
+                            {
+                                _id: "$_id",
+                                hostUrl : "$hostUrl",
+                                avgLoadTime:
+                                {
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:['$avgLoadTime',1000]},
+                                            {$mod:[{$multiply:['$avgLoadTime',1000]}, 1]}
+                                        ]},
+                                        1000
+                                    ]
+                                },
+                                low:{
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:['$low',1000]},
+                                            {$mod:[{$multiply:['$low',1000]}, 1]}
+                                        ]},
+                                        1000
+                                    ]
+                                },
+                                high:{
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:['$high',1000]},
+                                            {$mod:[{$multiply:['$high',1000]}, 1]}
+                                        ]},
+                                        1000
+                                    ]
+                                },
+                                count: "$count"
+                            }
+                        }
+                    ]
+                ).toArray(function (err, avgLoadTimes){
+                    benchmarkDB.find().count(function (err, total) {
+                        res.render('sitesbyloadtime.html', { records : avgLoadTimes.slice(0,99)});
+                        db.close();
+                    });
+                });
+            } catch (e) {
+                console.log("Could not connect to MongoDb " + e);
+            }
+        });
+    } catch (e) {
+        console.log("Could not connect to MongoDb " + e) ;
+    }
+});
+/* Group host urls by average file sizes. */
 router.get('/sitesbyfilesize', function(req,res) {
+
+    var sort = -1;
+    if (req.query.sort) {
+        sort = flip_sbfs == 1 ? -1 : 1;
+    }
+    flip_sbfs = sort;
     try {
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
@@ -109,23 +227,16 @@ router.get('/sitesbyfilesize', function(req,res) {
                     },
                     {
                         $group: {
-                            _id : "$originUrl",
-                            fileSize : {$avg : "$fileSize"}
+                            _id : "$hostUrl",
+                            fileSize : {$avg : "$fileSize"},
+                            low: { $min : "$fileSize"},
+                            high: { $max : "$fileSize"},
+                            count: { $sum : 1}
                         }
                     },
                     {
                         $sort: {
-                            fileSize: -1
-                        }
-                    },
-                    {
-                        $project:{
-                            _id:"$_id",
-                            fileSize:{
-                                $divide:[
-                                    "$fileSize", 1024
-                                ]
-                            }
+                            fileSize: sort
                         }
                     },
                     {
@@ -141,7 +252,26 @@ router.get('/sitesbyfilesize', function(req,res) {
                                     ]},
                                     10
                                 ]
-                            }
+                            },
+                            low:{
+                                $divide:[
+                                    {$subtract:[
+                                        {$multiply:["$low",10]},
+                                        {$mod:[{$multiply:["$low",10]}, 1]}
+                                    ]},
+                                    10
+                                ]
+                            },
+                            high:{
+                                $divide:[
+                                    {$subtract:[
+                                        {$multiply:["$high",10]},
+                                        {$mod:[{$multiply:["$high",10]}, 1]}
+                                    ]},
+                                    10
+                                ]
+                            },
+                            count:"$count"
                         }
                     }
                 ]).toArray(function (err, avgLoadTimes){
@@ -159,8 +289,14 @@ router.get('/sitesbyfilesize', function(req,res) {
     }
 });
 
-/* Group by ad networks display. */
+/* Group ad networks by average file sizes. */
 router.get('/networksbyfilesize', function(req,res) {
+
+    var sort = -1;
+    if (req.query.sort) {
+        sort = flip_nbfs == 1 ? -1 : 1;
+    }
+    flip_nbfs = sort;
     try {
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
@@ -174,23 +310,16 @@ router.get('/networksbyfilesize', function(req,res) {
                     {
                         $group: {
                             _id : "$adNetwork",
-                            fileSize : {$avg : "$fileSize"}
+                            fileSize : {$avg : "$fileSize"},
+                            low : { $min : "$fileSize"},
+                            high : { $max : "$fileSize"},
+                            count : { $sum : 1 }
                         }
                     },
                     {
                         $sort: {
-                            fileSize: -1
+                            fileSize: sort
                         }
-                    },
-                    {
-                      $project:{
-                          _id:"$_id",
-                          fileSize:{
-                              $divide:[
-                                  "$fileSize", 1024
-                              ]
-                          }
-                      }
                     },
                     {
                         $project:
@@ -205,7 +334,27 @@ router.get('/networksbyfilesize', function(req,res) {
                                     ]},
                                     10
                                 ]
-                            }
+                            },
+                            low:{
+                                $divide:[
+                                    {$subtract:[
+                                        {$multiply:["$low",10]},
+                                        {$mod:[{$multiply:["$low",10]}, 1]}
+                                    ]},
+                                    10
+                                ]
+                            },
+                            high:{
+                                $divide:[
+                                    {$subtract:[
+                                        {$multiply:["$high",10]},
+                                        {$mod:[{$multiply:["$high",10]}, 1]}
+                                    ]},
+                                    10
+                                ]
+                            },
+                            count:"$count"
+
                         }
                     }
                 ]).toArray(function (err, fileSizes){

@@ -2,28 +2,24 @@
 
 {% block body %}
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-  <h2 class="sub-header">The Latest 100</h2>
+  <h2 class="sub-header">Sites by Load Time</h2>
   <div class="table-responsive">
     <table class="table table-striped">
       <thead>
         <tr>
           <th>Website</th>
-          <th>Ad Network</th>
-          <th>Status Code</th>
-          <th>File Type</th>
-          <th>Complete Time</th>
-          <th>File Size</th>
+          <th><a href="/sitesbyloadtime?sort=true">Average Load Time</a></th>
+          <th>Distribution (ms)</th>
+          <th>Count</th>
         </tr>
       </thead>
       <tbody>
         {% for record in records %}
         <tr>
-          <td>{{record.hostUrl}}</td>
-          <td>{{record.adNetwork}}</td>
-          <td>{{record.statusCode}}</td>
-          <td>{{record.assetType}}</td>
-          <td>{{record.assetCompleteTime}} ms</td>
-          <td>{{record.fileSize}}</td>
+          <td>{{record._id}}</td>
+          <td>{{record.avgLoadTime}} ms</td>
+          <td>{{record.low}} - {{record.high}}</td>
+          <td>{{record.count}}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -34,6 +30,6 @@
 
 {% block scripts %}
 <script>
-  $('#latest').addClass('active');
+  $('#sites-by-load-time').addClass('active');
 </script>
 {% endblock %}

@@ -8,7 +8,9 @@
       <thead>
         <tr>
           <th>Ad Network</th>
-          <th>Average Load Time</th>
+          <th><a href="/networksbyloadtime?sort=true">Average Load Time</a></th>
+          <th>Distribution (ms)</th>
+          <th>Count</th>
         </tr>
       </thead>
       <tbody>
@@ -16,6 +18,8 @@
         <tr>
           <td>{{record._id}}</td>
           <td>{{record.avgLoadTime}} ms</td>
+          <td>{{record.low}} - {{record.high}}</td>
+          <td>{{record.count}}</td>
         </tr>
         {% endfor %}
       </tbody>

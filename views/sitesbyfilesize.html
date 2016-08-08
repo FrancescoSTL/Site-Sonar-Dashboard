@@ -7,15 +7,37 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Origin</th>
-          <th>File Size</th>
+          <th>Website</th>
+          <th><a href="/sitesbyfilesize?sort=true">File Size</a></th>
+          <th>Distribution</th>
+          <th>Count</th>
         </tr>
       </thead>
       <tbody>
         {% for record in records %}
         <tr>
           <td>{{record._id}}</td>
-          <td>{{record.fileSize}} KB</td>
+          <td>
+            {% if record.fileSize/1024<1 %}
+            {{record.fileSize}} Bytes
+            {% else %}
+            {{(record.fileSize/1024)|round|int}} KB
+            {% endif %}
+          </td>
+          <td>
+            {% if record.low/1024<1%}
+              {{record.low}} Bytes
+            {% else %}
+              {{ (record.low/1024)|round|int }} KB
+            {% endif %}
+            -
+            {% if record.high/1024<1 %}
+              {{record.high}} Bytes
+            {% else %}
+              {{(record.high/1024)|round|int}} KB
+            {% endif %}
+          </td>
+          <td>{{record.count}}</td>
         </tr>
         {% endfor %}
       </tbody>
