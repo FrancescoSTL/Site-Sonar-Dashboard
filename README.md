@@ -75,10 +75,17 @@ Want to start writing some dashboards? Below you'll find an example (shortened) 
 2. **originUrl** `String` The URL from which the HTTP request originated. In many cases, this will be the hostUrl, however, sometimes ads will trigger their own HTTP requests. For example, checkout the following example from some real world data we pulled in [Ultra-Lightbeam Issue #17](https://github.com/FrancescoSTL/Ultra-Lightbeam/issues/17#issue-168984693)
 
 3. **hostUrl** `String` The top level host URL from which the HTTP request originated. For example, if you have 3 tabs open and one request originates from the first tab (lets say, `youtube.com`), the top level host would always be said tab's url (`youtube.com`).
+
 4. **adNetworkUrl** `String` The host URL of the ad asset.
+
 5. **assetType** `String` Can be anything recieved by [webRequest.ResourceType](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/WebRequest/ResourceType).
+
 6. **fileSize** `Integer` File size in octets of bits.
+
 7. **timeStamp** `Integer` Time when the asset was requested (in milliseconds) since the [epoch](https://en.wikipedia.org/wiki/Epoch_(reference_date))
+
 8. **method** `String` Either "GET" or "POST".
+
 9. **statusCode** `Integer` Standard HTTP status code returned by the server. Ex: `200`, `404`, `301`, etc
+
 10. **adNetwork** `String` The Ad Network for which the asset belongs.
