@@ -372,6 +372,10 @@ router.get('/networksbyfilesize', function(req,res) {
     }
 });
 
+router.get('/contact', function(req, res) {
+  res.render('contact.html');
+});
+
 /* POST for data logging to Mongo */
 router.post('/log', function(req, res) {
     // TODO: parse data and send to Mongo
