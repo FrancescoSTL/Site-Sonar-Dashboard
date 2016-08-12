@@ -73,7 +73,7 @@ router.get('/networksbyloadtime', function(req,res) {
                         },
                         {
                             $sort: {
-                                avgLoadTime: sort
+                                avgLoadTime: -sort
                             }
                         },
                         {
@@ -153,7 +153,7 @@ router.get('/sitesbyloadtime', function(req,res) {
                         },
                         {
                             $sort: {
-                                avgLoadTime: sort
+                                avgLoadTime: -sort
                             }
                         },
                         {
@@ -236,7 +236,7 @@ router.get('/sitesbyfilesize', function(req,res) {
                     },
                     {
                         $sort: {
-                            fileSize: sort
+                            fileSize: -sort
                         }
                     },
                     {
@@ -318,7 +318,7 @@ router.get('/networksbyfilesize', function(req,res) {
                     },
                     {
                         $sort: {
-                            fileSize: sort
+                            fileSize: -sort
                         }
                     },
                     {
