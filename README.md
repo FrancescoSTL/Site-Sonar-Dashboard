@@ -1,7 +1,16 @@
-# Ultra-Lightbeam Dashboard + RESTful API
-This repository serves as a home for the [Ultra-Lightbeam](https://github.com/FrancescoSTL/Ultra-Lightbeam) Dashboard and RESTful API. The Dashboard will soon allow users to see crowd-sourced data on ad-content load times for major ad networks on the web, while the RESTful API serves as the web-extension's trusty end-point to log benchmarking details to our server. 
+![Ultra-Lightbeam Header Image](https://cloud.githubusercontent.com/assets/9794516/17645622/e442be3a-615f-11e6-8898-4916fafca02c.png)
 
-## Installing Ultra-Lightbeam Dashboard
+# Ultra-Lightbeam Dashboard + RESTful API
+A project aimed at identifying ad networks with the fastest and slowest performing ad's on the internet through crowd-sourced, easy to understand, and openly accessible benchmarking data. Inspired by [Lightbeam](https://github.com/mozilla/lightbeam), the [Ultra-Lightbeam browser extension]((https://github.com/FrancescoSTL/Ultra-Lightbeam) locates and benchmarks ad content silently while you browse. It is then sent to Ultra-Lightbeam's servers, where the data is aggregated and displayed on our [public dashboard](http://ultra-lightbeam.com/dashboard). This repository serves as a home for the Ultra-Lightbeam Dashboard and RESTful API. 
+
+## Index
+* [Summary](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#ultra-lightbeam-dashboard--restful-api)
+* [Running Ultra-Lightbeam Dashboard](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#running-ultra-lightbeam-dashboard)
+* [Testing RESTful API Locally](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#testing-the-ultra-lightbeam-restful-api-locally)
+* [API Docs](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#api-documentation)
+* [FAQ](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#faq)
+
+## Running Ultra-Lightbeam Dashboard
 
 Clone the repository by running:
 
@@ -10,8 +19,6 @@ git clone https://github.com/FrancescoSTL/ultra-lightbeamdashboard.git
 ```
 
 Download and install [Node.js](https://nodejs.org/en/download/)
-
-## Running Ultra-Lightbeam Dashboard
 
 Once you've cloned the repo and installed Node.js, you can start sherlock by running:
 
@@ -28,7 +35,7 @@ You should recieve back the message: `Data successfully recieved by Ultra-Lightb
 
 Congrats, you just successfully set up the local version of Ultra-Lightbeam's Dashboard!
 
-# RESTful API Documentation
+# API Documentation
 
 Want to start writing some dashboards? Below you'll find an example (shortened) JSON object we recieved after one user browsed the internet:
 ```
@@ -89,3 +96,36 @@ Want to start writing some dashboards? Below you'll find an example (shortened) 
 9. **statusCode** `Integer` Standard HTTP status code returned by the server. Ex: `200`, `404`, `301`, etc
 
 10. **adNetwork** `String` The Ad Network for which the asset belongs.
+
+## Privacy Policy
+
+### Ultra-Lightbeam Privacy Summary
+Ultra-Lightbeam is a browser extension currently supported in Firefox, Chrome, and Opera, which silently collects data about how ad's are performing in your browser. After collecting that data, it will be sent to Ultra-Lightbeam's server to aggregate (unless you opt out) and keep ad networks accountable through publicly accessible performance information on our [dashboard](http://ultra-lightbeam.com/dashboard) (hosted in this repo).
+
+### What you should know
+
+1. Upon installing Ultra-Lightbeam, data will be collected locally and stored in your browser. Unless you opt out, every 2 minutes, that data will be sent to Ultra-Lightbeam servers for aggregation and display on our public dashboard.
+2. By default, data collected by Ultra-Lightbeam is sent to us.
+3. You can chose to opt out of sending any data to us.
+4. If you do contribute Ultra-Lightbeam data to us, your browser will send us your data in a manner which we believe minimizes your risk of being re-identified (you can see a list of the kind of data involved here). We will post your data along with data from others in an aggregated and open database. Opening this data can help users and researchers make more informed decisions based on the collective information.
+5. Uninstalling Lightbeam prevents collection of any further Ultra-Lightbeam data and will delete the data stored locally in your browser.
+
+## FAQ
+
+### Will Ultra-Lightbeam track my browsing history?
+Sort of. Once installed, Ultra-Lightbeam collects the host url of any website you browse that hosts ad content. Read more in our [Privacy Policy](https://github.com/FrancescoSTL/Ultra-Lightbeam#privacy-policy) or [Summary of Data Collection](https://github.com/FrancescoSTL/Ultra-Lightbeam#data-ultra-lightbeam-collects).
+
+### How can I contribute?
+Check out our installation instructions and then head to our Github Issues page for either the [Ultra-Lightbeam web extension](http://github.com/francescostl/ultra-lightbeam/issues) (this repo), or the [Ultra-Lightbeam Dashboard](http://github.com/francescostl/ultra-lightbeamdashboard/issues).
+
+### Who are you?
+A group of humans interested in making the internet a better place through a pragmatic approach to problems on the web.
+
+Specifically:
+* [Francesco Polizzi](http://www.francesco.tech)
+* [Asa Dotzler](https://asadotzler.com/)
+* [Purush Kaushik](https://www.linkedin.com/in/purukaushik)
+* [Justin Potts](https://twitter.com/PottsJustin/)
+
+### How can we contact you?
+Visit our [Contact Page](http://ultra-lightbeam.com/contact).
