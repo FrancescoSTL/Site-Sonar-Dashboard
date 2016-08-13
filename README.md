@@ -8,6 +8,7 @@ A project aimed at identifying ad networks with the fastest and slowest performi
 * [Running Ultra-Lightbeam Dashboard](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#running-ultra-lightbeam-dashboard)
 * [Testing RESTful API Locally](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#testing-the-ultra-lightbeam-restful-api-locally)
 * [API Docs](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#api-documentation)
+* [Privacy Policy](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#privacy-policy)
 * [FAQ](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#faq)
 
 ## Running Ultra-Lightbeam Dashboard
@@ -35,7 +36,7 @@ You should recieve back the message: `Data successfully recieved by Ultra-Lightb
 
 Congrats, you just successfully set up the local version of Ultra-Lightbeam's Dashboard!
 
-# API Documentation
+## API Documentation
 
 Want to start writing some dashboards? Below you'll find an example (shortened) JSON object we recieved after one user browsed the internet:
 ```
