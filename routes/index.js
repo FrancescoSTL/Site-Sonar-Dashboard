@@ -372,6 +372,145 @@ router.get('/networksbyfilesize', function(req,res) {
     }
 });
 
+/* Histograms for networks - load time and file size.*/
+router.get('/networkstats', function(req, res){
+    var network = req.query.network;
+
+    try {
+        MongoClient.connect(url, function(err, db) {
+            var benchmarkDB = db.collection('benchmark_logs');
+            try {
+                benchmarkDB.aggregate([
+                    {
+                        $match: {
+                            "adNetwork" : network,
+                            "fileSize" : { "$exists" : true, "$ne": null}
+                        }
+                    },
+                    {
+                        $project : {
+                            _id: "$originUrl",
+                            fileSize: "$fileSize",
+                            loadTime: "$assetCompleteTime"
+                        }
+                    }
+                ]).toArray(function (err, recordsForNetwork){
+                        benchmarkDB.aggregate([
+                            {
+                                $match: {
+                                    "adNetwork" : network,
+                                    "fileSize" : { "$exists" : true, "$ne": null}
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: "$assetType",
+                                    count: {$sum: 1},
+                                    averageFileSize: {$avg : "$fileSize"},
+                                    averageLoadTime: {$avg: "$assetCompleteTime"}
+
+
+                                }
+                            },
+                            {
+                                $project:
+                                {
+                                    _id: "$_id",
+                                    averageFileSize:
+                                    {
+                                        $divide:[
+                                            {$subtract:[
+                                                {$multiply:["$averageFileSize",10]},
+                                                {$mod:[{$multiply:["$averageFileSize",10]}, 1]}
+                                            ]},
+                                            10
+                                        ]
+                                    },
+                                    averageLoadTime:{
+                                        $divide:[
+                                            {$subtract:[
+                                                {$multiply:["$averageLoadTime",10]},
+                                                {$mod:[{$multiply:["$averageLoadTime",10]}, 1]}
+                                            ]},
+                                            10
+                                        ]
+                                    },
+                                    count:"$count"
+
+                                }
+                            }
+                        ]).toArray(function (err, assetTypes){
+                            benchmarkDB.aggregate([
+                                {
+                                    $match: {
+                                        "fileSize" : { "$exists" : true, "$ne": null}
+                                    }
+                                },
+                                {
+                                    $group: {
+                                        _id: "$adNetwork",
+                                        count: {$sum: 1},
+                                        averageFileSize: {$avg : "$fileSize"},
+                                        averageLoadTime: {$avg: "$assetCompleteTime"}
+                                    }
+                                },
+                                {
+                                    $project:
+                                    {
+                                        _id: "$_id",
+                                        averageFileSize:
+                                        {
+                                            $divide:[
+                                                {$subtract:[
+                                                    {$multiply:["$averageFileSize",10]},
+                                                    {$mod:[{$multiply:["$averageFileSize",10]}, 1]}
+                                                ]},
+                                                10
+                                            ]
+                                        },
+                                        averageLoadTime:{
+                                            $divide:[
+                                                {$subtract:[
+                                                    {$multiply:["$averageLoadTime",10]},
+                                                    {$mod:[{$multiply:["$averageLoadTime",10]}, 1]}
+                                                ]},
+                                                10
+                                            ]
+                                        },
+                                        count:"$count"
+
+                                    }
+                                },
+                                {
+                                    $match : {
+                                        "_id" : network
+                                    }
+                                }
+
+                            ]).toArray(function(err,overall ){
+                                res.render('networkstats.html', {
+                                    overall: overall,
+                                    records : recordsForNetwork,
+                                    network : network,
+                                    assetTypes: assetTypes
+                                });
+                                db.close();
+                            });
+                        });
+
+
+                });
+
+            } catch (e) {
+                console.log("Could not connect to MongoDb " + e);
+            }
+        });
+    } catch (e) {
+        console.log("Could not connect to MongoDb " + e) ;
+    }
+
+});
+
 router.get('/contact', function(req, res) {
   res.render('contact.html');
 });
