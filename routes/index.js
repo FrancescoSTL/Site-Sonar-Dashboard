@@ -380,6 +380,7 @@ router.get('/networkstats', function(req, res){
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
             try {
+                /* Histogram stats*/
                 benchmarkDB.aggregate([
                     {
                         $match: {
@@ -395,6 +396,7 @@ router.get('/networkstats', function(req, res){
                         }
                     }
                 ]).toArray(function (err, recordsForNetwork){
+                    /* Asset type classification*/
                         benchmarkDB.aggregate([
                             {
                                 $match: {
@@ -438,8 +440,12 @@ router.get('/networkstats', function(req, res){
                                     count:"$count"
 
                                 }
+                            },
+                            {
+                                $sort : { count : -1 }
                             }
                         ]).toArray(function (err, assetTypes){
+                            /* Top level stats*/
                             benchmarkDB.aggregate([
                                 {
                                     $match: {
