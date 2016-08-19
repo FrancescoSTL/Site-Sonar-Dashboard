@@ -1,12 +1,12 @@
 ![Site-Sonar Header Image](https://cloud.githubusercontent.com/assets/9794516/17645622/e442be3a-615f-11e6-8898-4916fafca02c.png)
 
-# Site-Sonar Dashboard + RESTful API
+# Site Sonar Dashboard + RESTful API
 A project aimed at identifying ad networks with the fastest and slowest performing ad's on the internet through crowd-sourced, easy to understand, and openly accessible benchmarking data. Inspired by [Lightbeam](https://github.com/mozilla/lightbeam), the [Site-Sonar browser extension]((https://github.com/FrancescoSTL/Site-Sonar) locates and benchmarks ad content silently while you browse. It is then sent to Site-Sonar's servers, where the data is aggregated and displayed on our [public dashboard](http://Site-Sonar.com/dashboard). This repository serves as a home for the Site-Sonar Dashboard and RESTful API. 
 
 ## Index
 * [Summary](https://github.com/FrancescoSTL/Site-Sonar-Dashboard#Site-Sonar-dashboard--restful-api)
-* [Running Site-Sonar Dashboard](https://github.com/FrancescoSTL/Site-Sonar-Dashboard#running-Site-Sonar-dashboard)
-* [Testing RESTful API Locally](https://github.com/FrancescoSTL/Site-Sonar-Dashboard#testing-the-Site-Sonar-restful-api-locally)
+* [Running Site-Sonar Dashboard](https://github.com/FrancescoSTL/Site-Sonar-Dashboard#running-site-sonar-dashboard)
+* [Testing RESTful API Locally](https://github.com/FrancescoSTL/Site-Sonar-Dashboard#testing-the-site-sonar-restful-api-locally)
 * [API Docs](https://github.com/FrancescoSTL/Site-Sonar-Dashboard#api-documentation)
 * [Privacy Policy](https://github.com/FrancescoSTL/Site-Sonar-Dashboard#privacy-policy)
 * [FAQ](https://github.com/FrancescoSTL/Site-Sonar-Dashboard#faq)
@@ -27,7 +27,7 @@ Once you've cloned the repo and installed Node.js, you can start sherlock by run
 2. `node ./bin/www.js`
 3. Navigate to `https://localhost:3000/`
 
-## Testing the Site-Sonar RESTful API Locally
+## Testing the Site Sonar RESTful API Locally
 
 1. Start running the Site-Sonar dashboard as instructed above
 2. Run `curl -d 'Data to send' http://localhost:3000/log/`
