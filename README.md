@@ -1,22 +1,22 @@
-![Ultra-Lightbeam Header Image](https://cloud.githubusercontent.com/assets/9794516/17645622/e442be3a-615f-11e6-8898-4916fafca02c.png)
+![Site-Sonar Header Image](https://cloud.githubusercontent.com/assets/9794516/17645622/e442be3a-615f-11e6-8898-4916fafca02c.png)
 
-# Ultra-Lightbeam Dashboard + RESTful API
-A project aimed at identifying ad networks with the fastest and slowest performing ad's on the internet through crowd-sourced, easy to understand, and openly accessible benchmarking data. Inspired by [Lightbeam](https://github.com/mozilla/lightbeam), the [Ultra-Lightbeam browser extension]((https://github.com/FrancescoSTL/Ultra-Lightbeam) locates and benchmarks ad content silently while you browse. It is then sent to Ultra-Lightbeam's servers, where the data is aggregated and displayed on our [public dashboard](http://ultra-lightbeam.com/dashboard). This repository serves as a home for the Ultra-Lightbeam Dashboard and RESTful API. 
+# Site-Sonar Dashboard + RESTful API
+A project aimed at identifying ad networks with the fastest and slowest performing ad's on the internet through crowd-sourced, easy to understand, and openly accessible benchmarking data. Inspired by [Lightbeam](https://github.com/mozilla/lightbeam), the [Site-Sonar browser extension]((https://github.com/FrancescoSTL/Site-Sonar) locates and benchmarks ad content silently while you browse. It is then sent to Site-Sonar's servers, where the data is aggregated and displayed on our [public dashboard](http://Site-Sonar/dashboard). This repository serves as a home for the Site-Sonar Dashboard and RESTful API. 
 
 ## Index
-* [Summary](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#ultra-lightbeam-dashboard--restful-api)
-* [Running Ultra-Lightbeam Dashboard](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#running-ultra-lightbeam-dashboard)
-* [Testing RESTful API Locally](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#testing-the-ultra-lightbeam-restful-api-locally)
-* [API Docs](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#api-documentation)
-* [Privacy Policy](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#privacy-policy)
-* [FAQ](https://github.com/FrancescoSTL/Ultra-LightbeamDashboard#faq)
+* [Summary](https://github.com/FrancescoSTL/Site-Sonar-Dashboard#Site-Sonar-dashboard--restful-api)
+* [Running Site-Sonar Dashboard](https://github.com/FrancescoSTL/Site-Sonar-Dashboard#running-Site-Sonar-dashboard)
+* [Testing RESTful API Locally](https://github.com/FrancescoSTL/Site-Sonar-Dashboard#testing-the-Site-Sonar-restful-api-locally)
+* [API Docs](https://github.com/FrancescoSTL/Site-Sonar-Dashboard#api-documentation)
+* [Privacy Policy](https://github.com/FrancescoSTL/Site-Sonar-Dashboard#privacy-policy)
+* [FAQ](https://github.com/FrancescoSTL/Site-Sonar-Dashboard#faq)
 
-## Running Ultra-Lightbeam Dashboard
+## Running Site-Sonar Dashboard
 
 Clone the repository by running:
 
 ```
-git clone https://github.com/FrancescoSTL/ultra-lightbeamdashboard.git
+git clone https://github.com/FrancescoSTL/Site-Sonar-dashboard.git
 ```
 
 Download and install [Node.js](https://nodejs.org/en/download/)
@@ -27,14 +27,14 @@ Once you've cloned the repo and installed Node.js, you can start sherlock by run
 2. `node ./bin/www.js`
 3. Navigate to `https://localhost:3000/`
 
-## Testing the Ultra-Lightbeam RESTful API Locally
+## Testing the Site-Sonar RESTful API Locally
 
-1. Start running the ultra-lightbeam dashboard as instructed above
+1. Start running the Site-Sonar dashboard as instructed above
 2. Run `curl -d 'Data to send' http://localhost:3000/log/`
 
-You should recieve back the message: `Data successfully recieved by Ultra-Lightbeam. Thanks :-).`
+You should recieve back the message: `Data successfully recieved by Site-Sonar. Thanks :-).`
 
-Congrats, you just successfully set up the local version of Ultra-Lightbeam's Dashboard!
+Congrats, you just successfully set up the local version of Site-Sonar's Dashboard!
 
 ## API Documentation
 
@@ -80,7 +80,7 @@ Want to start writing some dashboards? Below you'll find an example (shortened) 
 
 1. **assetCompleteTime** `Integer` Amount of time (in milliseconds) that the network took to respond to the HTTP request for the asset. This is calculated using a time diff between [onSendHeaders](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/onSendHeaders) and [onHeadersReceived](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/onHeadersReceived).
 
-2. **originUrl** `String` The URL from which the HTTP request originated. In many cases, this will be the hostUrl, however, sometimes ads will trigger their own HTTP requests. For example, checkout the following example from some real world data we pulled in [Ultra-Lightbeam Issue #17](https://github.com/FrancescoSTL/Ultra-Lightbeam/issues/17#issue-168984693)
+2. **originUrl** `String` The URL from which the HTTP request originated. In many cases, this will be the hostUrl, however, sometimes ads will trigger their own HTTP requests. For example, checkout the following example from some real world data we pulled in [Site-Sonar Issue #17](https://github.com/FrancescoSTL/Site-Sonar/issues/17#issue-168984693)
 
 3. **hostUrl** `String` The top level host URL from which the HTTP request originated. For example, if you have 3 tabs open and one request originates from the first tab (lets say, `youtube.com`), the top level host would always be said tab's url (`youtube.com`).
 
@@ -100,24 +100,24 @@ Want to start writing some dashboards? Below you'll find an example (shortened) 
 
 ## Privacy Policy
 
-### Ultra-Lightbeam Privacy Summary
-Ultra-Lightbeam is a browser extension currently supported in Firefox, Chrome, and Opera, which silently collects data about how ad's are performing in your browser. After collecting that data, it will be sent to Ultra-Lightbeam's server to aggregate (unless you opt out) and keep ad networks accountable through publicly accessible performance information on our [dashboard](http://ultra-lightbeam.com/dashboard) (hosted in this repo).
+### Site-Sonar Privacy Summary
+Site-Sonar is a browser extension currently supported in Firefox, Chrome, and Opera, which silently collects data about how ad's are performing in your browser. After collecting that data, it will be sent to Site-Sonar's server to aggregate (unless you opt out) and keep ad networks accountable through publicly accessible performance information on our [dashboard](http://Site-Sonar.com/dashboard) (hosted in this repo).
 
 ### What you should know
 
-1. Upon installing Ultra-Lightbeam, data will be collected locally and stored in your browser. Unless you opt out, every 2 minutes, that data will be sent to Ultra-Lightbeam servers for aggregation and display on our public dashboard.
-2. By default, data collected by Ultra-Lightbeam is sent to us.
+1. Upon installing Site-Sonar, data will be collected locally and stored in your browser. Unless you opt out, every 2 minutes, that data will be sent to Site-Sonar servers for aggregation and display on our public dashboard.
+2. By default, data collected by Site-Sonar is sent to us.
 3. You can chose to opt out of sending any data to us.
-4. If you do contribute Ultra-Lightbeam data to us, your browser will send us your data in a manner which we believe minimizes your risk of being re-identified (you can see a list of the kind of data involved here). We will post your data along with data from others in an aggregated and open database. Opening this data can help users and researchers make more informed decisions based on the collective information.
-5. Uninstalling Lightbeam prevents collection of any further Ultra-Lightbeam data and will delete the data stored locally in your browser.
+4. If you do contribute Site-Sonar data to us, your browser will send us your data in a manner which we believe minimizes your risk of being re-identified (you can see a list of the kind of data involved here). We will post your data along with data from others in an aggregated and open database. Opening this data can help users and researchers make more informed decisions based on the collective information.
+5. Uninstalling Site-Sonar prevents collection of any further Site-Sonar data and will delete the data stored locally in your browser.
 
 ## FAQ
 
-### Will Ultra-Lightbeam track my browsing history?
-Sort of. Once installed, Ultra-Lightbeam collects the host url of any website you browse that hosts ad content. Read more in our [Privacy Policy](https://github.com/FrancescoSTL/Ultra-Lightbeam#privacy-policy) or [Summary of Data Collection](https://github.com/FrancescoSTL/Ultra-Lightbeam#data-ultra-lightbeam-collects).
+### Will Site-Sonar track my browsing history?
+Sort of. Once installed, Site-Sonar collects the host url of any website you browse that hosts ad content. Read more in our [Privacy Policy](https://github.com/FrancescoSTL/Site-Sonar#privacy-policy) or [Summary of Data Collection](https://github.com/FrancescoSTL/Site-Sonar#data-Site-Sonar-collects).
 
 ### How can I contribute?
-Check out our installation instructions and then head to our Github Issues page for either the [Ultra-Lightbeam web extension](http://github.com/francescostl/ultra-lightbeam/issues) (this repo), or the [Ultra-Lightbeam Dashboard](http://github.com/francescostl/ultra-lightbeamdashboard/issues).
+Check out our installation instructions and then head to our Github Issues page for either the [Site-Sonar web extension](http://github.com/francescostl/Site-Sonar/issues) (this repo), or the [Site-Sonar Dashboard](http://github.com/francescostl/Site-Sonar-dashboard/issues).
 
 ### Who are you?
 A group of humans interested in making the internet a better place through a pragmatic approach to problems on the web.
@@ -129,4 +129,4 @@ Specifically:
 * [Justin Potts](https://twitter.com/PottsJustin/)
 
 ### How can we contact you?
-Visit our [Contact Page](http://ultra-lightbeam.com/contact).
+Visit our [Contact Page](http://Site-Sonar.com/contact).
