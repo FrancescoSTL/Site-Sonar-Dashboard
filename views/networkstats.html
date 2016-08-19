@@ -25,6 +25,7 @@
             </tbody>
         </table>
     </div>
+    <h3 class="sub-header">Asset types in ads on this site</h3>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -51,9 +52,11 @@
             </tbody>
         </table>
     </div>
+    <h3 class=" sub-header">Histograms</h3>
+    <div id="loadTimeHist" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"></div>
+    <div id="fileSizeHist" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"></div>
+
 </div>
-<div id="loadTimeHist" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"></div>
-<div id="fileSizeHist" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"></div>
 {% endblock %}
 
 {% block scripts %}
@@ -61,7 +64,7 @@
   $('#networks-by-file-size').addClass('active');
 
 
-  /* Network histograms*/
+
   var fileSizes = [], loadTimes = [];
 
 
@@ -70,6 +73,10 @@
     loadTimes.push({{record.loadTime}});
   {% endfor %}
 
+  /* TODO: Fix outliers. */
+
+
+  /* Network histograms*/
   var network = "{{network}}";
 
   var fileSizeHist = [
