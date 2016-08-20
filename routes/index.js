@@ -18,33 +18,7 @@ router.get('/', function(req, res) {
 
 /* GET home page. */
 router.get('/dashboard', function(req, res) {
-    try {
-        MongoClient.connect(url, function(err, db) {
-            var benchmarkDB = db.collection('benchmark_logs');
-
-            try {
-                benchmarkDB.find({}, {sort: {timeStamp: -1}}).toArray(function(err, assetLoadTimes) {
-                    benchmarkDB.find().count(function (err, total) {
-                        var millisecondTotal = 0;
-                        for (var record in assetLoadTimes) {
-                            millisecondTotal += parseInt(record);
-                        }
-
-                        // calculate our total processing time in minutes, and round to 2 decimal places
-                        var minutesTotal = Math.round((millisecondTotal * .000016667) * 100) / 100;
-
-                        res.render('dashboard.html', { records : assetLoadTimes.slice(0,99), count: total, totalTime: minutesTotal});
-
-                        db.close();
-                    });
-                });
-            } catch (e) {
-                    console.log("Could not find records in database " + e);
-            }
-        });
-    } catch (e) {
-        console.log("Could not connect to MongoDb " + e);
-    }
+    res.redirect('/networksbyloadtime');
 });
 
 /* Group ad networks by average load time. */
