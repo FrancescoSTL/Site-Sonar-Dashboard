@@ -16,7 +16,7 @@
       <tbody>
         {% for record in records %}
         <tr>
-          <td>{{record._id}}</td>
+          <td><a href="/sitestats?site={{record._id}}">{{record._id}}</a></td>
           <td>{{record.avgLoadTime}} ms</td>
           <td>{{record.low}} - {{record.high}}</td>
           <td>{{record.count}}</td>
