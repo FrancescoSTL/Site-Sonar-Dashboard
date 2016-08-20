@@ -702,7 +702,7 @@ router.post('/log', function(req, res) {
                 try {
                     benchmarkDB.insertMany(assetLoadTimes).then(function(r) {
                         // let the client know we've received their data
-                        res.send("Data successfully recieved by Ultra-Lightbeam. Thanks :-).");
+                        res.send("Data successfully recieved by Site-Sonar. Thanks :-).");
                         db.close();
                     });
                 } catch (e) {
