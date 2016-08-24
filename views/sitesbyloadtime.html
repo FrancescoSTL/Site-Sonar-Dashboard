@@ -8,8 +8,8 @@
       <thead>
         <tr>
           <th>Website</th>
-          <th><a href="/sitesbyloadtime?sort=true">Average Load Time Per Ad</a></th>
-          <th>Distribution (ms)</th>
+          <th><a href="/sitesbyloadtime?sort=true">Average Ad Load Time</a></th>
+          <!-- <th>Distribution (ms)</th> -->
           <th>Assets Benchmarked</th>
         </tr>
       </thead>
@@ -18,7 +18,7 @@
         <tr>
           <td><a href="/sitestats?site={{record._id}}">{{record._id}}</a></td>
           <td>{{record.avgLoadTime}} ms</td>
-          <td>{{record.low}} - {{record.high}}</td>
+          <!-- <td>{{record.low}} - {{record.high}}</td> -->
           <td>{{record.count}}</td>
         </tr>
         {% endfor %}

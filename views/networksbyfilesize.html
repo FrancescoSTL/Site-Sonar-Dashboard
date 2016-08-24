@@ -8,8 +8,8 @@
       <thead>
         <tr>
           <th>Ad Network</th>
-          <th><a href="/networksbyfilesize?sort=true">Average File Size Per Ad</a></th>
-          <th>Distribution</th>
+          <th><a href="/networksbyfilesize?sort=true">Average Ad File Size</a></th>
+          <!-- <th>Distribution</th> -->
           <th>Assets Benchmarked</th>
         </tr>
       </thead>
@@ -24,7 +24,7 @@
           {{(record.fileSize/1024)|round|int}} KB
           {% endif %}
         </td>
-        <td>
+        <!-- <td>
           {% if record.low/1024<1%}
           {{record.low}} Bytes
           {% else %}
@@ -36,7 +36,7 @@
           {% else %}
           {{(record.high/1024)|round|int}} KB
           {% endif %}
-        </td>
+        </td> -->
         <td>{{record.count}}</td>
       </tr>
       {% endfor %}
