@@ -18,33 +18,7 @@ router.get('/', function(req, res) {
 
 /* GET home page. */
 router.get('/dashboard', function(req, res) {
-    try {
-        MongoClient.connect(url, function(err, db) {
-            var benchmarkDB = db.collection('benchmark_logs');
-
-            try {
-                benchmarkDB.find({}, {sort: {timeStamp: -1}}).toArray(function(err, assetLoadTimes) {
-                    benchmarkDB.find().count(function (err, total) {
-                        var millisecondTotal = 0;
-                        for (var record in assetLoadTimes) {
-                            millisecondTotal += parseInt(record);
-                        }
-
-                        // calculate our total processing time in minutes, and round to 2 decimal places
-                        var minutesTotal = Math.round((millisecondTotal * .000016667) * 100) / 100;
-
-                        res.render('dashboard.html', { records : assetLoadTimes.slice(0,99), count: total, totalTime: minutesTotal});
-
-                        db.close();
-                    });
-                });
-            } catch (e) {
-                    console.log("Could not find records in database " + e);
-            }
-        });
-    } catch (e) {
-        console.log("Could not connect to MongoDb " + e);
-    }
+    res.redirect('/networksbyloadtime');
 });
 
 /* Group ad networks by average load time. */
@@ -372,6 +346,344 @@ router.get('/networksbyfilesize', function(req,res) {
     }
 });
 
+/* Histograms for networks - load time and file size.*/
+router.get('/networkstats', function(req, res){
+    var network = req.query.network;
+
+    try {
+        MongoClient.connect(url, function(err, db) {
+            var benchmarkDB = db.collection('benchmark_logs');
+            try {
+                /* Histogram stats*/
+                benchmarkDB.aggregate([
+                    {
+                        $match: {
+                            "adNetwork" : network,
+                            "fileSize" : { "$exists" : true, "$ne": null}
+                        }
+                    },
+                    {
+                        $project : {
+                            _id: "$originUrl",
+                            fileSize: "$fileSize",
+                            loadTime: "$assetCompleteTime"
+                        }
+                    }
+                ]).toArray(function (err, recordsForNetwork){
+                    /* Asset type classification*/
+                        benchmarkDB.aggregate([
+                            {
+                                $match: {
+                                    "adNetwork" : network,
+                                    "fileSize" : { "$exists" : true, "$ne": null}
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: "$assetType",
+                                    count: {$sum: 1},
+                                    averageFileSize: {$avg : "$fileSize"},
+                                    averageLoadTime: {$avg: "$assetCompleteTime"}
+
+
+                                }
+                            },
+                            {
+                                $project:
+                                {
+                                    _id: "$_id",
+                                    averageFileSize:
+                                    {
+                                        $divide:[
+                                            {$subtract:[
+                                                {$multiply:["$averageFileSize",10]},
+                                                {$mod:[{$multiply:["$averageFileSize",10]}, 1]}
+                                            ]},
+                                            10
+                                        ]
+                                    },
+                                    averageLoadTime:{
+                                        $divide:[
+                                            {$subtract:[
+                                                {$multiply:["$averageLoadTime",10]},
+                                                {$mod:[{$multiply:["$averageLoadTime",10]}, 1]}
+                                            ]},
+                                            10
+                                        ]
+                                    },
+                                    count:"$count"
+
+                                }
+                            },
+                            {
+                                $sort : { count : -1 }
+                            }
+                        ]).toArray(function (err, assetTypes){
+                            /* Top level stats*/
+                            benchmarkDB.aggregate([
+                                {
+                                    $match: {
+                                        "fileSize" : { "$exists" : true, "$ne": null}
+                                    }
+                                },
+                                {
+                                    $group: {
+                                        _id: "$adNetwork",
+                                        count: {$sum: 1},
+                                        averageFileSize: {$avg : "$fileSize"},
+                                        averageLoadTime: {$avg: "$assetCompleteTime"}
+                                    }
+                                },
+                                {
+                                    $project:
+                                    {
+                                        _id: "$_id",
+                                        averageFileSize:
+                                        {
+                                            $divide:[
+                                                {$subtract:[
+                                                    {$multiply:["$averageFileSize",10]},
+                                                    {$mod:[{$multiply:["$averageFileSize",10]}, 1]}
+                                                ]},
+                                                10
+                                            ]
+                                        },
+                                        averageLoadTime:{
+                                            $divide:[
+                                                {$subtract:[
+                                                    {$multiply:["$averageLoadTime",10]},
+                                                    {$mod:[{$multiply:["$averageLoadTime",10]}, 1]}
+                                                ]},
+                                                10
+                                            ]
+                                        },
+                                        count:"$count"
+
+                                    }
+                                },
+                                {
+                                    $match : {
+                                        "_id" : network
+                                    }
+                                }
+
+                            ]).toArray(function(err,overall ){
+                                res.render('networkstats.html', {
+                                    overall: overall,
+                                    records : recordsForNetwork,
+                                    network : network,
+                                    assetTypes: assetTypes
+                                });
+                                db.close();
+                            });
+                        });
+
+
+                });
+
+            } catch (e) {
+                console.log("Could not connect to MongoDb " + e);
+            }
+        });
+    } catch (e) {
+        console.log("Could not connect to MongoDb " + e) ;
+    }
+
+});
+
+/* Sites page */
+router.get('/sitestats', function(req, res){
+    var site = req.query.site;
+    try {
+        MongoClient.connect(url, function(err, db) {
+            var benchmarkDB = db.collection('benchmark_logs');
+            try {
+                benchmarkDB.aggregate([
+                    {
+                        $match: {
+                            "originUrl" : site,
+                            "fileSize" : { "$exists" : true, "$ne": null}
+                        }
+                    },
+                    {
+                        $project : {
+                            _id: "$originUrl",
+                            fileSize: "$fileSize",
+                            loadTime: "$assetCompleteTime"
+                        }
+                    }
+                ]).toArray(function (err, recordsForSite){
+                    benchmarkDB.aggregate([
+                        {
+                            $match: {
+                                "originUrl" : site,
+                                "fileSize" : { "$exists" : true, "$ne": null}
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: "$assetType",
+                                count: {$sum: 1},
+                                averageFileSize: {$avg : "$fileSize"},
+                                averageLoadTime: {$avg: "$assetCompleteTime"}
+
+
+                            }
+                        },
+                        {
+                            $project:
+                            {
+                                _id: "$_id",
+                                averageFileSize:
+                                {
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:["$averageFileSize",10]},
+                                            {$mod:[{$multiply:["$averageFileSize",10]}, 1]}
+                                        ]},
+                                        10
+                                    ]
+                                },
+                                averageLoadTime:{
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:["$averageLoadTime",10]},
+                                            {$mod:[{$multiply:["$averageLoadTime",10]}, 1]}
+                                        ]},
+                                        10
+                                    ]
+                                },
+                                count:"$count"
+
+                            }
+                        },
+                        {
+                            $sort : { count : -1 }
+                        }
+                    ]).toArray(function (err, assetTypes) {
+                        /* Top level stats*/
+                        benchmarkDB.aggregate([
+                            {
+                                $match: {
+                                    "originUrl": site,
+                                    "fileSize": {"$exists": true, "$ne": null}
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: "$adNetwork",
+                                    count: {$sum: 1},
+                                    averageFileSize: {$avg: "$fileSize"},
+                                    averageLoadTime: {$avg: "$assetCompleteTime"}
+                                }
+                            },
+                            {
+                                $project: {
+                                    averageFileSize: {
+                                        $divide: [
+                                            {
+                                                $subtract: [
+                                                    {$multiply: ["$averageFileSize", 10]},
+                                                    {$mod: [{$multiply: ["$averageFileSize", 10]}, 1]}
+                                                ]
+                                            },
+                                            10
+                                        ]
+                                    },
+                                    averageLoadTime: {
+                                        $divide: [
+                                            {
+                                                $subtract: [
+                                                    {$multiply: ["$averageLoadTime", 10]},
+                                                    {$mod: [{$multiply: ["$averageLoadTime", 10]}, 1]}
+                                                ]
+                                            },
+                                            10
+                                        ]
+                                    },
+                                    count: "$count"
+
+                                }
+                            },
+                            {
+                                $sort : {count : -1}
+                            },
+                            {
+                                $limit : 5
+                            }
+                        ]).toArray(function (err, networkWiseStats) {
+                            benchmarkDB.aggregate([
+                                {
+                                    $match: {
+                                        "fileSize" : { "$exists" : true, "$ne": null}
+                                    }
+                                },
+                                {
+                                    $group: {
+                                        _id: "$originUrl",
+                                        count: {$sum: 1},
+                                        averageFileSize: {$avg : "$fileSize"},
+                                        averageLoadTime: {$avg: "$assetCompleteTime"}
+                                    }
+                                },
+                                {
+                                    $project:
+                                    {
+                                        _id: "$_id",
+                                        averageFileSize:
+                                        {
+                                            $divide:[
+                                                {$subtract:[
+                                                    {$multiply:["$averageFileSize",10]},
+                                                    {$mod:[{$multiply:["$averageFileSize",10]}, 1]}
+                                                ]},
+                                                10
+                                            ]
+                                        },
+                                        averageLoadTime:{
+                                            $divide:[
+                                                {$subtract:[
+                                                    {$multiply:["$averageLoadTime",10]},
+                                                    {$mod:[{$multiply:["$averageLoadTime",10]}, 1]}
+                                                ]},
+                                                10
+                                            ]
+                                        },
+                                        count:"$count"
+
+                                    }
+                                },
+                                {
+                                    $match : {
+                                        "_id" : site
+                                    }
+                                }
+
+                            ]).toArray(function (err, overall){
+                                res.render('sitestats.html', {
+                                    overall : overall, //Top level stats for site
+                                    networkWiseStats: networkWiseStats, // Network level stats
+                                    site: site, // site name
+                                    assetTypes: assetTypes, // asset type level stats
+                                    records: recordsForSite // Histogram stats
+                                });
+                                db.close();
+                            });
+                        });
+                    });
+                });
+            } catch (e) {
+                console.log("Could not connect to MongoDb " + e);
+            }
+        });
+    } catch (e) {
+        console.log("Could not connect to MongoDb " + e) ;
+    }
+
+});
+
+
+
 router.get('/contact', function(req, res) {
   res.render('contact.html');
 });
@@ -390,7 +702,7 @@ router.post('/log', function(req, res) {
                 try {
                     benchmarkDB.insertMany(assetLoadTimes).then(function(r) {
                         // let the client know we've received their data
-                        res.send("Data successfully recieved by Ultra-Lightbeam. Thanks :-).");
+                        res.send("Data successfully recieved by Site-Sonar. Thanks :-).");
                         db.close();
                     });
                 } catch (e) {
