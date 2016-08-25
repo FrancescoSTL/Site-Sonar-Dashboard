@@ -104,10 +104,13 @@ router.get('/networksbyloadtime', function(req,res) {
                                 $match: {
                                     "count" : { "$gt" : filter}
                                 }
+                            },
+                            {
+                                $limit: 100
                             }
                         ]).toArray(function (err, avgLoadTimes){
                             benchmarkDB.find().count(function (err, total) {
-                                res.render('networksbyloadtime.html', { records : avgLoadTimes.slice(0,99)});
+                                res.render('networksbyloadtime.html', { records : avgLoadTimes});
                                 db.close();
                             });
                         });
@@ -203,10 +206,13 @@ router.get('/sitesbyloadtime', function(req,res) {
                             $match: {
                                 "count" : { "$gt" : filter}
                             }
+                        },
+                        {
+                            $limit: 100
                         }
                     ]).toArray(function (err, avgLoadTimes){
                         benchmarkDB.find().count(function (err, total) {
-                            res.render('sitesbyloadtime.html', { records : avgLoadTimes.slice(0,99)});
+                            res.render('sitesbyloadtime.html', { records : avgLoadTimes});
                             db.close();
                         });
                     });
@@ -309,10 +315,13 @@ router.get('/sitesbyfilesize', function(req,res) {
                             $match: {
                                 "count" : { "$gt" : filter}
                             }
+                        },
+                        {
+                            $limit: 100
                         }
                     ]).toArray(function (err, avgLoadTimes) {
                         benchmarkDB.find().count(function (err, total) {
-                            res.render('sitesbyfilesize.html', {records: avgLoadTimes.slice(0, 99)});
+                            res.render('sitesbyfilesize.html', {records: avgLoadTimes});
                             db.close();
                         });
                     });
@@ -413,10 +422,13 @@ router.get('/networksbyfilesize', function(req,res) {
                             $match: {
                                 "count" : { "$gt" : filter}
                             }
+                        },
+                        {
+                            $limit: 100
                         }
                     ]).toArray(function (err, fileSizes){
                         benchmarkDB.find().count(function (err, total) {
-                            res.render('networksbyfilesize.html', { records : fileSizes.slice(0,99)});
+                            res.render('networksbyfilesize.html', { records : fileSizes});
                             db.close();
                         });
                     });
