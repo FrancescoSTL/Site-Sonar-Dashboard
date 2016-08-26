@@ -6,7 +6,7 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
-var url = "mongodb://heroku_803m4q4j:1f1t2tc0ih11omaekmln78tkcn@ds031995.mlab.com:31995/heroku_803m4q4j";
+var url = process.env.MONGODB_URI;
 var flip_nblt = 1;
 var flip_nbfs = 1;
 var flip_sbfs = 1;
@@ -34,64 +34,83 @@ router.get('/networksbyloadtime', function(req,res) {
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
             try {
-                benchmarkDB.aggregate(
-                    [
-                        {
-                            $group: {
-                                _id : "$adNetwork",
-                                avgLoadTime : { $avg : "$assetCompleteTime"},
-                                low: { $min : "$assetCompleteTime"},
-                                high: { $max : "$assetCompleteTime" },
-                                count: { $sum : 1 }
-                            }
-                        },
-                        {
-                            $sort: {
-                                avgLoadTime: -sort
-                            }
-                        },
-                        {
-                            $project:
-                            {
-                                _id: "$_id",
-                                adNetwork : "$adNetwork",
-                                avgLoadTime:
-                                {
-                                    $divide:[
-                                        {$subtract:[
-                                            {$multiply:['$avgLoadTime',1000]},
-                                            {$mod:[{$multiply:['$avgLoadTime',1000]}, 1]}
-                                        ]},
-                                        1000
-                                    ]
-                                },
-                                low:{
-                                    $divide:[
-                                        {$subtract:[
-                                            {$multiply:['$low',1000]},
-                                            {$mod:[{$multiply:['$low',1000]}, 1]}
-                                        ]},
-                                        1000
-                                    ]
-                                },
-                                high:{
-                                    $divide:[
-                                        {$subtract:[
-                                            {$multiply:['$high',1000]},
-                                            {$mod:[{$multiply:['$high',1000]}, 1]}
-                                        ]},
-                                        1000
-                                    ]
-                                },
-                                count: "$count"
-                            }
+                benchmarkDB.aggregate([
+                    {
+                        $group: {
+                            _id: "$adNetwork",
+                            count: { $sum: 1 }
                         }
-                    ]
-                ).toArray(function (err, avgLoadTimes){
-                    benchmarkDB.find().count(function (err, total) {
-                        res.render('networksbyloadtime.html', { records : avgLoadTimes.slice(0,99)});
-                        db.close();
-                    });
+                    },
+                    {
+                        $sort: { count: 1 }
+                    }
+                    ]).toArray( function (err, averageCount){
+                        var size = averageCount.length;
+                        var median = Math.floor(size/4);
+                        var filter = averageCount[median].count;
+
+                        benchmarkDB.aggregate([
+                            {
+                                $group: {
+                                    _id : "$adNetwork",
+                                    avgLoadTime : { $avg : "$assetCompleteTime"},
+                                    low: { $min : "$assetCompleteTime"},
+                                    high: { $max : "$assetCompleteTime" },
+                                    count: { $sum : 1 }
+                                }
+                            },
+                            {
+                                $sort: {
+                                    avgLoadTime: -sort
+                                }
+                            },
+                            {
+                                $project:
+                                {
+                                    _id: "$_id",
+                                    adNetwork : "$adNetwork",
+                                    avgLoadTime:
+                                    {
+                                        $divide:[
+                                            {$subtract:[
+                                                {$multiply:['$avgLoadTime',1000]},
+                                                {$mod:[{$multiply:['$avgLoadTime',1000]}, 1]}
+                                            ]},
+                                            1000
+                                        ]
+                                    },
+                                    low:{
+                                        $divide:[
+                                            {$subtract:[
+                                                {$multiply:['$low',1000]},
+                                                {$mod:[{$multiply:['$low',1000]}, 1]}
+                                            ]},
+                                            1000
+                                        ]
+                                    },
+                                    high:{
+                                        $divide:[
+                                            {$subtract:[
+                                                {$multiply:['$high',1000]},
+                                                {$mod:[{$multiply:['$high',1000]}, 1]}
+                                            ]},
+                                            1000
+                                        ]
+                                    },
+                                    count: "$count"
+                                }
+                            },
+                            {
+                                $match: {
+                                    "count" : { "$gt" : filter}
+                                }
+                            }
+                        ]).toArray(function (err, avgLoadTimes){
+                            benchmarkDB.find().count(function (err, total) {
+                                res.render('networksbyloadtime.html', { records : avgLoadTimes.slice(0,99)});
+                                db.close();
+                            });
+                        });
                 });
             } catch (e) {
                 console.log("Could not connect to MongoDb " + e);
@@ -114,8 +133,22 @@ router.get('/sitesbyloadtime', function(req,res) {
         MongoClient.connect(url, function(err, db) {
             var benchmarkDB = db.collection('benchmark_logs');
             try {
-                benchmarkDB.aggregate(
-                    [
+                benchmarkDB.aggregate([
+                    {
+                        $group: {
+                            _id: "$hostUrl",
+                            count: { $sum: 1 }
+                        }
+                    },
+                    {
+                        $sort: { count: 1 }
+                    }
+                ]).toArray( function (err, averageCount){
+                    var size = averageCount.length;
+                    var median = Math.floor(size/4);
+                    var filter = averageCount[median].count;
+                    console.log(median, filter);
+                    benchmarkDB.aggregate([
                         {
                             $group: {
                                 _id : "$hostUrl",
@@ -165,12 +198,17 @@ router.get('/sitesbyloadtime', function(req,res) {
                                 },
                                 count: "$count"
                             }
+                        },
+                        {
+                            $match: {
+                                "count" : { "$gt" : filter}
+                            }
                         }
-                    ]
-                ).toArray(function (err, avgLoadTimes){
-                    benchmarkDB.find().count(function (err, total) {
-                        res.render('sitesbyloadtime.html', { records : avgLoadTimes.slice(0,99)});
-                        db.close();
+                    ]).toArray(function (err, avgLoadTimes){
+                        benchmarkDB.find().count(function (err, total) {
+                            res.render('sitesbyloadtime.html', { records : avgLoadTimes.slice(0,99)});
+                            db.close();
+                        });
                     });
                 });
             } catch (e) {
@@ -195,63 +233,88 @@ router.get('/sitesbyfilesize', function(req,res) {
             try {
                 benchmarkDB.aggregate([
                     {
-                        $match: {
-                            "fileSize" : { "$exists" : true, "$ne": null}
-                        }
-                    },
-                    {
                         $group: {
-                            _id : "$hostUrl",
-                            fileSize : {$avg : "$fileSize"},
-                            low: { $min : "$fileSize"},
-                            high: { $max : "$fileSize"},
-                            count: { $sum : 1}
+                            _id: "$hostUrl",
+                            count: { $sum: 1 }
                         }
                     },
                     {
-                        $sort: {
-                            fileSize: -sort
-                        }
-                    },
-                    {
-                        $project:
-                        {
-                            _id: "$_id",
-                            fileSize:
-                            {
-                                $divide:[
-                                    {$subtract:[
-                                        {$multiply:["$fileSize",10]},
-                                        {$mod:[{$multiply:["$fileSize",10]}, 1]}
-                                    ]},
-                                    10
-                                ]
-                            },
-                            low:{
-                                $divide:[
-                                    {$subtract:[
-                                        {$multiply:["$low",10]},
-                                        {$mod:[{$multiply:["$low",10]}, 1]}
-                                    ]},
-                                    10
-                                ]
-                            },
-                            high:{
-                                $divide:[
-                                    {$subtract:[
-                                        {$multiply:["$high",10]},
-                                        {$mod:[{$multiply:["$high",10]}, 1]}
-                                    ]},
-                                    10
-                                ]
-                            },
-                            count:"$count"
-                        }
+                        $sort: { count: 1 }
                     }
-                ]).toArray(function (err, avgLoadTimes){
-                    benchmarkDB.find().count(function (err, total) {
-                        res.render('sitesbyfilesize.html', { records : avgLoadTimes.slice(0,99)});
-                        db.close();
+                ]).toArray( function (err, averageCount) {
+                    var size = averageCount.length;
+                    var median = Math.floor(size / 4);
+                    var filter = averageCount[median].count;
+                    console.log(median, filter);
+                    benchmarkDB.aggregate([
+                        {
+                            $match: {
+                                "fileSize": {"$exists": true, "$ne": null}
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: "$hostUrl",
+                                fileSize: {$avg: "$fileSize"},
+                                low: {$min: "$fileSize"},
+                                high: {$max: "$fileSize"},
+                                count: {$sum: 1}
+                            }
+                        },
+                        {
+                            $sort: {
+                                fileSize: -sort
+                            }
+                        },
+                        {
+                            $project: {
+                                _id: "$_id",
+                                fileSize: {
+                                    $divide: [
+                                        {
+                                            $subtract: [
+                                                {$multiply: ["$fileSize", 10]},
+                                                {$mod: [{$multiply: ["$fileSize", 10]}, 1]}
+                                            ]
+                                        },
+                                        10
+                                    ]
+                                },
+                                low: {
+                                    $divide: [
+                                        {
+                                            $subtract: [
+                                                {$multiply: ["$low", 10]},
+                                                {$mod: [{$multiply: ["$low", 10]}, 1]}
+                                            ]
+                                        },
+                                        10
+                                    ]
+                                },
+                                high: {
+                                    $divide: [
+                                        {
+                                            $subtract: [
+                                                {$multiply: ["$high", 10]},
+                                                {$mod: [{$multiply: ["$high", 10]}, 1]}
+                                            ]
+                                        },
+                                        10
+                                    ]
+                                },
+                                count: "$count"
+                            },
+                        },
+                        {
+                            $match: {
+                                "count" : { "$gt" : filter}
+                            }
+                        }
+                    ]).toArray(function (err, avgLoadTimes) {
+                        benchmarkDB.find().count(function (err, total) {
+                            res.render('sitesbyfilesize.html', {records: avgLoadTimes.slice(0, 99)});
+                            db.close();
+                        });
                     });
                 });
             } catch (e) {
@@ -277,64 +340,85 @@ router.get('/networksbyfilesize', function(req,res) {
             try {
                 benchmarkDB.aggregate([
                     {
-                        $match: {
-                            "fileSize" : { "$exists" : true, "$ne": null}
-                        }
-                    },
-                    {
                         $group: {
-                            _id : "$adNetwork",
-                            fileSize : {$avg : "$fileSize"},
-                            low : { $min : "$fileSize"},
-                            high : { $max : "$fileSize"},
-                            count : { $sum : 1 }
+                            _id: "$adNetwork",
+                            count: { $sum: 1 }
                         }
                     },
                     {
-                        $sort: {
-                            fileSize: -sort
-                        }
-                    },
-                    {
-                        $project:
-                        {
-                            _id: "$_id",
-                            fileSize:
-                            {
-                                $divide:[
-                                    {$subtract:[
-                                        {$multiply:["$fileSize",10]},
-                                        {$mod:[{$multiply:["$fileSize",10]}, 1]}
-                                    ]},
-                                    10
-                                ]
-                            },
-                            low:{
-                                $divide:[
-                                    {$subtract:[
-                                        {$multiply:["$low",10]},
-                                        {$mod:[{$multiply:["$low",10]}, 1]}
-                                    ]},
-                                    10
-                                ]
-                            },
-                            high:{
-                                $divide:[
-                                    {$subtract:[
-                                        {$multiply:["$high",10]},
-                                        {$mod:[{$multiply:["$high",10]}, 1]}
-                                    ]},
-                                    10
-                                ]
-                            },
-                            count:"$count"
-
-                        }
+                        $sort: { count: 1 }
                     }
-                ]).toArray(function (err, fileSizes){
-                    benchmarkDB.find().count(function (err, total) {
-                        res.render('networksbyfilesize.html', { records : fileSizes.slice(0,99)});
-                        db.close();
+                ]).toArray( function (err, averageCount) {
+                    var size = averageCount.length;
+                    var median = Math.floor(size / 4);
+                    var filter = averageCount[median].count;
+                    console.log(median, filter);
+                    benchmarkDB.aggregate([
+                        {
+                            $match: {
+                                "fileSize" : { "$exists" : true, "$ne": null}
+                            }
+                        },
+                        {
+                            $group: {
+                                _id : "$adNetwork",
+                                fileSize : {$avg : "$fileSize"},
+                                low : { $min : "$fileSize"},
+                                high : { $max : "$fileSize"},
+                                count : { $sum : 1 }
+                            }
+                        },
+                        {
+                            $sort: {
+                                fileSize: -sort
+                            }
+                        },
+                        {
+                            $project:
+                            {
+                                _id: "$_id",
+                                fileSize:
+                                {
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:["$fileSize",10]},
+                                            {$mod:[{$multiply:["$fileSize",10]}, 1]}
+                                        ]},
+                                        10
+                                    ]
+                                },
+                                low:{
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:["$low",10]},
+                                            {$mod:[{$multiply:["$low",10]}, 1]}
+                                        ]},
+                                        10
+                                    ]
+                                },
+                                high:{
+                                    $divide:[
+                                        {$subtract:[
+                                            {$multiply:["$high",10]},
+                                            {$mod:[{$multiply:["$high",10]}, 1]}
+                                        ]},
+                                        10
+                                    ]
+                                },
+                                count:"$count"
+
+                            }
+                        },
+                        {
+                            $match: {
+                                "count" : { "$gt" : filter}
+                            }
+                        }
+                    ]).toArray(function (err, fileSizes){
+                        benchmarkDB.find().count(function (err, total) {
+                            res.render('networksbyfilesize.html', { records : fileSizes.slice(0,99)});
+                            db.close();
+                        });
                     });
                 });
             } catch (e) {
