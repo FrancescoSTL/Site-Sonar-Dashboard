@@ -119,9 +119,13 @@ body {
   height: 75%;
 }
 
-h1 {
+.jumbotron h1 {
   font-weight: 300;
   font-size: 72px;
+  color: #9c56b8;
+}
+
+.jumbotron h2 {
   color: #9c56b8;
 }
 
@@ -138,6 +142,22 @@ h1 {
 .sub-header {
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
+}
+
+.privacy-list {
+  width: 70%;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
+.privacy-list p {
+  font-size: 15px;
+}
+
+.privacy-list li {
+  text-align: left;
+  font-size: 15px;
 }
 
 /*
