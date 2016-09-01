@@ -778,7 +778,10 @@ router.get('/sitestats', function(req, res){
 
 });
 
-
+/* GET privacy policy page. */
+router.get('/privacy', function(req, res) {
+  res.render('privacy.html');
+});
 
 router.get('/contact', function(req, res) {
   res.render('contact.html');

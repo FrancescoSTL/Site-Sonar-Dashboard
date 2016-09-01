@@ -125,6 +125,10 @@ h1 {
   color: #9c56b8;
 }
 
+.jumbotron h2 {
+  color: #9c56b8;
+}
+
 .subheading {
   font-size: 30px;
   font-style: italic;
@@ -138,6 +142,22 @@ h1 {
 .sub-header {
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
+}
+
+.privacy-list {
+  width: 70%;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
+.privacy-list p {
+  font-size: 15px;
+}
+
+.privacy-list li {
+  text-align: left;
+  font-size: 15px;
 }
 
 /*

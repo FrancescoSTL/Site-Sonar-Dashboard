@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Site-Sonar Dashboard</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">Site-Sonar</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li><a href="/dashboard">Dashboard</a></li>
+          <li class="active"><a href="/privacy">Privacy</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="https://github.com/FrancescoSTL/Site-Sonar"><b>Download</b></a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </nav>
+
+    <div class="jumbotron subsection-white vertical-center">
+      <div class="container">
+        <h2>Privacy Summary</h2>
+        <div class="row">
+          <p>Site-Sonar is a browser extension currently supported in Firefox, Chrome, and Opera, which silently collects data about how ad's are performing in your browser. After collecting that data, it will be sent to Site-Sonar's server to aggregate (unless you opt out) and view through publicly accessible ad benchmark information on our dashboard.</p>
+        </div>
+        <br>
+        <h2>What you should know</h2>
+        <div class="row">
+          <ol class="privacy-list">
+            <li>Upon installing Site-Sonar, data will be collected locally and stored in your browser. Unless you opt out, every 2 minutes, that data will be sent to Site-Sonar servers for aggregation and display on our public dashboard.</li>
+            <li>By default, data collected by Site-Sonar is sent to us.</li>
+            <li>You can chose to opt out of sending any data to us.</li>
+            <li>If you do contribute Site-Sonar data to us, your browser will send us your data in a manner which we believe minimizes your risk of being re-identified (you can see a list of the kind of data involved below). We will post your data along with data from others in an aggregated and open database. Opening this data can help users and researchers make more informed decisions based on the collective information.</li>
+            <li>Uninstalling Site-Sonar prevents collection of any further Site-Sonar data.</li>
+          </ol>
+        </div>
+        <h2>Data we collect</h2>
+        <div class="row">
+          <ol class="privacy-list">
+            <p>Using Disconnect's Blacklist of ad domains, Site-Sonar will benchmark and collect the following information about each ad asset loaded in your browser:</p>
+            <li><b>assetCompleteTime</b> Integer Amount of time (in milliseconds) that the network took to respond to the HTTP request for the asset. This is calculated using a time diff between onSendHeaders and onHeadersReceived.</li>
+            <li><b>originUrl</b> String The URL from which the HTTP request originated. In many cases, this will be the hostUrl, however, sometimes ads will trigger their own HTTP requests.</li>
+            <li><b>hostUrl</b> String The top level host URL from which the HTTP request originated. For example, if you have 3 tabs open and one request originates from the first tab (lets say, youtube.com), the top level host would always be said tab's url (youtube.com).</li>
+            <li><b>adNetworkUrl</b> String The host URL of the ad asset.</li>
+            <li><b>assetType</b> String Can be anything recieved by webRequest.ResourceType.</li>
+            <li><b>fileSize</b> Integer File size in octets of bits.</li>
+            <li><b>timeStamp</b> Integer Time when the asset was requested (in milliseconds) since the epoch.</li>
+            <li><b>method</b> String Either "GET" or "POST".</li>
+            <li><b>statusCode</b> Integer Standard HTTP status code returned by the server. Ex: 200, 404, 301, etc.</li>
+            <li><b>adNetwork</b> String The Ad Network for which the asset belongs.</li>
+          </ol>
+        </div>
+        <br>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        <a href="/dashboard">Dashboard</a>
+        &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+        <a>Privacy</a>
+        &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+        <a href="/contact">Contact</a>
+        &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+        <a href="https://github.com/FrancescoSTL/Site-Sonar">Download</a>
+      </p>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <!-- GA Script -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-82101385-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>
