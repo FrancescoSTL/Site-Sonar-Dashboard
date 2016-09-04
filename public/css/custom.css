@@ -246,3 +246,7 @@ h1 {
   display: inline-block;
   border-radius: 50%;
 }
+
+#hidden{
+  display: none
+}

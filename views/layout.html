@@ -26,6 +26,28 @@
           <li><a href="/contact">Contact</a></li>
           <li><a href="https://github.com/FrancescoSTL/Site-Sonar"><b>Download</b></a></li>
         </ul>
+        <div class="col-sm-3 col-md-3 pull-right">
+          <form class="navbar-form" role="search" method="get" action="/search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search" name="query" id="srch-term">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+              </div>
+            </div>
+            <div class="input-group" id="hidden">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="searchBy" value="adNetwork" checked> Networks
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="searchBy" value="originUrl"> Sites 
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
       </div><!--/.nav-collapse -->
     </nav>
 
@@ -48,6 +70,9 @@
 
     </div> <!-- /container -->
 
+
+    <script src="https://use.fontawesome.com/383724b71c.js"></script>
+
     <!-- jquery -->
     <script
       src="http://code.jquery.com/jquery-3.1.0.min.js"
@@ -65,7 +90,14 @@
       ga('create', 'UA-82101385-1', 'auto');
       ga('send', 'pageview');
     </script>
-
+    <!-- If page is /search, enable radio buttons-->
+    <script>
+      var page = window.location.href;
+      if (page.includes("search")) {
+        var div = document.getElementById("hidden");
+        div.style.display = 'block';
+      }
+    </script>
     {% block scripts %}
     {% endblock %}
   </body>

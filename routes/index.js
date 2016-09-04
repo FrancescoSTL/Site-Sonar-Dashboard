@@ -150,7 +150,7 @@ router.get('/sitesbyloadtime', function(req,res) {
                     var size = averageCount.length;
                     var median = Math.floor(size/4);
                     var filter = averageCount[median].count;
-                    console.log(median, filter);
+
                     benchmarkDB.aggregate([
                         {
                             $group: {
@@ -251,7 +251,7 @@ router.get('/sitesbyfilesize', function(req,res) {
                     var size = averageCount.length;
                     var median = Math.floor(size / 4);
                     var filter = averageCount[median].count;
-                    console.log(median, filter);
+
                     benchmarkDB.aggregate([
                         {
                             $match: {
@@ -361,7 +361,7 @@ router.get('/networksbyfilesize', function(req,res) {
                     var size = averageCount.length;
                     var median = Math.floor(size / 4);
                     var filter = averageCount[median].count;
-                    console.log(median, filter);
+
                     benchmarkDB.aggregate([
                         {
                             $match: {
@@ -778,9 +778,59 @@ router.get('/sitestats', function(req, res){
 
 });
 
+
 /* GET privacy policy page. */
 router.get('/privacy', function(req, res) {
   res.render('privacy.html');
+});
+router.get('/search', function(req, res){
+    var searchBy = "adNetwork";
+
+    if (req.get('referer') != null){
+        var referer = req.get('referer');
+        if (referer.includes("networks")){
+            searchBy = 'adNetwork';
+        } else if (referer.includes('sites')){
+            searchBy = 'originUrl';
+        }
+        if (referer.includes("search")) {
+            console.log("Taking from param");
+            searchBy = req.query.searchBy;
+        }
+    }
+
+    try {
+        MongoClient.connect(url, function(err, db) {
+            var benchmarkDB = db.collection('benchmark_logs');
+            try {
+                benchmarkDB.aggregate([
+                    {
+                        $group: {
+                            _id : "$" + searchBy,
+                            count: { $sum : 1}
+                        }
+                    },
+                    {
+                        $match: {
+                            "_id" : { $regex: req.query.query, $options: 'i' }
+                        }
+                    }
+                ]).toArray(function(err,searchResults){
+                    res.render("search.html", {
+                        searchResults :searchResults,
+                        category: searchBy,
+                        searchTerm: req.query.query
+                    })
+                });
+            } catch (e) {
+
+                console.log("Could not connect to MongoDb " + e);
+            }
+        });
+    } catch (e) {
+        console.log("Could not connect to MongoDb " + e) ;
+    }
+
 });
 
 router.get('/contact', function(req, res) {

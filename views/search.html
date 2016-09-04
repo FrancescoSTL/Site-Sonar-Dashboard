@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h2 class="sub-header">Search results</h2>
+    {% if searchResults | length == 0%}
+    <p>No search results for : {{searchTerm}}.</p>
+    {% else %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+
+                {% if category == "adNetwork" %}
+                <th>Network</th>
+                {% else %}
+                <th>Web Site</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for record in searchResults %}
+            <tr>
+                {% if category == "adNetwork" %}
+                <td><a href="/networkstats?network={{record._id}}">{{record._id}}</a></td>
+                {% else %}
+                <td><a href="/sitestats?site={{record._id}}">{{record._id}}</a></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}
