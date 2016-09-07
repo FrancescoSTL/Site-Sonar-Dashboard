@@ -73,28 +73,28 @@ router.get('/networksbyloadtime', function(req,res) {
                                     {
                                         $divide:[
                                             {$subtract:[
-                                                {$multiply:['$avgLoadTime',1000]},
-                                                {$mod:[{$multiply:['$avgLoadTime',1000]}, 1]}
+                                                {$multiply:['$avgLoadTime',10]},
+                                                {$mod:[{$multiply:['$avgLoadTime',10]}, 1]}
                                             ]},
-                                            1000
+                                            10
                                         ]
                                     },
                                     low:{
                                         $divide:[
                                             {$subtract:[
-                                                {$multiply:['$low',1000]},
-                                                {$mod:[{$multiply:['$low',1000]}, 1]}
+                                                {$multiply:['$low',10]},
+                                                {$mod:[{$multiply:['$low',10]}, 1]}
                                             ]},
-                                            1000
+                                            10
                                         ]
                                     },
                                     high:{
                                         $divide:[
                                             {$subtract:[
-                                                {$multiply:['$high',1000]},
-                                                {$mod:[{$multiply:['$high',1000]}, 1]}
+                                                {$multiply:['$high',10]},
+                                                {$mod:[{$multiply:['$high',10]}, 1]}
                                             ]},
-                                            1000
+                                            10
                                         ]
                                     },
                                     count: "$count"
@@ -175,28 +175,28 @@ router.get('/sitesbyloadtime', function(req,res) {
                                 {
                                     $divide:[
                                         {$subtract:[
-                                            {$multiply:['$avgLoadTime',1000]},
-                                            {$mod:[{$multiply:['$avgLoadTime',1000]}, 1]}
+                                            {$multiply:['$avgLoadTime',10]},
+                                            {$mod:[{$multiply:['$avgLoadTime',10]}, 1]}
                                         ]},
-                                        1000
+                                        10
                                     ]
                                 },
                                 low:{
                                     $divide:[
                                         {$subtract:[
-                                            {$multiply:['$low',1000]},
-                                            {$mod:[{$multiply:['$low',1000]}, 1]}
+                                            {$multiply:['$low',10]},
+                                            {$mod:[{$multiply:['$low',10]}, 1]}
                                         ]},
-                                        1000
+                                        10
                                     ]
                                 },
                                 high:{
                                     $divide:[
                                         {$subtract:[
-                                            {$multiply:['$high',1000]},
-                                            {$mod:[{$multiply:['$high',1000]}, 1]}
+                                            {$multiply:['$high',10]},
+                                            {$mod:[{$multiply:['$high',10]}, 1]}
                                         ]},
-                                        1000
+                                        10
                                     ]
                                 },
                                 count: "$count"
