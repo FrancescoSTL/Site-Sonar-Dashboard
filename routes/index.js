@@ -32,6 +32,12 @@ router.get('/networksbyloadtime', function(req,res) {
     flip_nblt = sort;
     try {
         MongoClient.connect(url, function(err, db) {
+            if(err!=null){
+
+                console.log(err);
+                res.render("error.html");
+                return;
+            }
             var benchmarkDB = db.collection('benchmark_logs');
             try {
                 benchmarkDB.aggregate([
@@ -45,9 +51,15 @@ router.get('/networksbyloadtime', function(req,res) {
                         $sort: { count: 1 }
                     }
                     ]).toArray( function (err, averageCount){
+                        if(err!=null){
+
+                            console.log(err);
+                            res.render("error.html");
+                            return;
+                        }
                         var size = averageCount.length;
                         var median = Math.floor(size/4);
-                        var filter = averageCount[median].count;
+                        var filter = averageCount[median]!=null? averageCount[median].count : 0;
 
                         benchmarkDB.aggregate([
                             {
@@ -109,6 +121,12 @@ router.get('/networksbyloadtime', function(req,res) {
                                 $limit: 100
                             }
                         ]).toArray(function (err, avgLoadTimes){
+                            if(err!=null){
+
+                                console.log(err);
+                                res.render("error.html");
+                                return;
+                            }
                             benchmarkDB.find().count(function (err, total) {
                                 res.render('networksbyloadtime.html', { records : avgLoadTimes});
                                 db.close();
@@ -134,6 +152,12 @@ router.get('/sitesbyloadtime', function(req,res) {
     flip_sblt = sort;
     try {
         MongoClient.connect(url, function(err, db) {
+            if(err!=null){
+
+                console.log(err);
+                res.render("error.html");
+                return;
+            }
             var benchmarkDB = db.collection('benchmark_logs');
             try {
                 benchmarkDB.aggregate([
@@ -147,9 +171,15 @@ router.get('/sitesbyloadtime', function(req,res) {
                         $sort: { count: 1 }
                     }
                 ]).toArray( function (err, averageCount){
+                    if(err!=null){
+
+                        console.log(err);
+                        res.render("error.html");
+                        return;
+                    }
                     var size = averageCount.length;
                     var median = Math.floor(size/4);
-                    var filter = averageCount[median].count;
+                    var filter = averageCount[median]!=null? averageCount[median].count : 0;
 
                     benchmarkDB.aggregate([
                         {
@@ -211,7 +241,19 @@ router.get('/sitesbyloadtime', function(req,res) {
                             $limit: 100
                         }
                     ]).toArray(function (err, avgLoadTimes){
+                        if(err!=null){
+
+                            console.log(err);
+                            res.render("error.html");
+                            return;
+                        }
                         benchmarkDB.find().count(function (err, total) {
+                            if(err!=null){
+
+                                console.log(err);
+                                res.render("error.html");
+                                return;
+                            }
                             res.render('sitesbyloadtime.html', { records : avgLoadTimes});
                             db.close();
                         });
@@ -235,6 +277,12 @@ router.get('/sitesbyfilesize', function(req,res) {
     flip_sbfs = sort;
     try {
         MongoClient.connect(url, function(err, db) {
+            if(err!=null){
+
+                console.log(err);
+                res.render("error.html");
+                return;
+            }
             var benchmarkDB = db.collection('benchmark_logs');
             try {
                 benchmarkDB.aggregate([
@@ -248,9 +296,15 @@ router.get('/sitesbyfilesize', function(req,res) {
                         $sort: { count: 1 }
                     }
                 ]).toArray( function (err, averageCount) {
+                    if(err!=null){
+
+                        console.log(err);
+                        res.render("error.html");
+                        return;
+                    }
                     var size = averageCount.length;
                     var median = Math.floor(size / 4);
-                    var filter = averageCount[median].count;
+                    var filter = averageCount[median]!=null? averageCount[median].count : 0;
 
                     benchmarkDB.aggregate([
                         {
@@ -320,7 +374,19 @@ router.get('/sitesbyfilesize', function(req,res) {
                             $limit: 100
                         }
                     ]).toArray(function (err, avgLoadTimes) {
+                        if(err!=null){
+
+                            console.log(err);
+                            res.render("error.html");
+                            return;
+                        }
                         benchmarkDB.find().count(function (err, total) {
+                            if(err!=null){
+
+                                console.log(err);
+                                res.render("error.html");
+                                return;
+                            }
                             res.render('sitesbyfilesize.html', {records: avgLoadTimes});
                             db.close();
                         });
@@ -345,6 +411,12 @@ router.get('/networksbyfilesize', function(req,res) {
     flip_nbfs = sort;
     try {
         MongoClient.connect(url, function(err, db) {
+            if(err!=null){
+
+                console.log(err);
+                res.render("error.html");
+                return;
+            }
             var benchmarkDB = db.collection('benchmark_logs');
             try {
                 benchmarkDB.aggregate([
@@ -358,9 +430,15 @@ router.get('/networksbyfilesize', function(req,res) {
                         $sort: { count: 1 }
                     }
                 ]).toArray( function (err, averageCount) {
+                    if(err!=null){
+
+                        console.log(err);
+                        res.render("error.html");
+                        return;
+                    }
                     var size = averageCount.length;
                     var median = Math.floor(size / 4);
-                    var filter = averageCount[median].count;
+                    var filter = averageCount[median]!=null? averageCount[median].count : 0;
 
                     benchmarkDB.aggregate([
                         {
@@ -427,7 +505,19 @@ router.get('/networksbyfilesize', function(req,res) {
                             $limit: 100
                         }
                     ]).toArray(function (err, fileSizes){
+                        if(err!=null){
+
+                            console.log(err);
+                            res.render("error.html");
+                            return;
+                        }
                         benchmarkDB.find().count(function (err, total) {
+                            if(err!=null){
+
+                                console.log(err);
+                                res.render("error.html");
+                                return;
+                            }
                             res.render('networksbyfilesize.html', { records : fileSizes});
                             db.close();
                         });
@@ -448,6 +538,12 @@ router.get('/networkstats', function(req, res){
 
     try {
         MongoClient.connect(url, function(err, db) {
+            if(err!=null){
+
+                console.log(err);
+                res.render("error.html");
+                return;
+            }
             var benchmarkDB = db.collection('benchmark_logs');
             try {
                 /* Histogram stats*/
@@ -466,6 +562,12 @@ router.get('/networkstats', function(req, res){
                         }
                     }
                 ]).toArray(function (err, recordsForNetwork){
+                    if(err!=null){
+
+                        console.log(err);
+                        res.render("error.html");
+                        return;
+                    }
                     /* Asset type classification*/
                         benchmarkDB.aggregate([
                             {
@@ -515,6 +617,12 @@ router.get('/networkstats', function(req, res){
                                 $sort : { count : -1 }
                             }
                         ]).toArray(function (err, assetTypes){
+                            if(err!=null){
+
+                                console.log(err);
+                                res.render("error.html");
+                                return;
+                            }
                             /* Top level stats*/
                             benchmarkDB.aggregate([
                                 {
@@ -564,6 +672,12 @@ router.get('/networkstats', function(req, res){
                                 }
 
                             ]).toArray(function(err,overall ){
+                                if(err!=null){
+
+                                    console.log(err);
+                                    res.render("error.html");
+                                    return;
+                                }
                                 res.render('networkstats.html', {
                                     overall: overall,
                                     records : recordsForNetwork,
@@ -592,6 +706,12 @@ router.get('/sitestats', function(req, res){
     var site = req.query.site;
     try {
         MongoClient.connect(url, function(err, db) {
+            if(err!=null){
+
+                console.log(err);
+                res.render("error.html");
+                return;
+            }
             var benchmarkDB = db.collection('benchmark_logs');
             try {
                 benchmarkDB.aggregate([
@@ -609,6 +729,12 @@ router.get('/sitestats', function(req, res){
                         }
                     }
                 ]).toArray(function (err, recordsForSite){
+                    if(err!=null){
+
+                        console.log(err);
+                        res.render("error.html");
+                        return;
+                    }
                     benchmarkDB.aggregate([
                         {
                             $match: {
@@ -657,6 +783,12 @@ router.get('/sitestats', function(req, res){
                             $sort : { count : -1 }
                         }
                     ]).toArray(function (err, assetTypes) {
+                        if(err!=null){
+
+                            console.log(err);
+                            res.render("error.html");
+                            return;
+                        }
                         /* Top level stats*/
                         benchmarkDB.aggregate([
                             {
@@ -708,6 +840,12 @@ router.get('/sitestats', function(req, res){
                                 $limit : 5
                             }
                         ]).toArray(function (err, networkWiseStats) {
+                            if(err!=null){
+
+                                console.log(err);
+                                res.render("error.html");
+                                return;
+                            }
                             benchmarkDB.aggregate([
                                 {
                                     $match: {
@@ -756,6 +894,12 @@ router.get('/sitestats', function(req, res){
                                 }
 
                             ]).toArray(function (err, overall){
+                                if(err!=null){
+
+                                    console.log(err);
+                                    res.render("error.html");
+                                    return;
+                                }
                                 res.render('sitestats.html', {
                                     overall : overall, //Top level stats for site
                                     networkWiseStats: networkWiseStats, // Network level stats
@@ -801,6 +945,12 @@ router.get('/search', function(req, res){
 
     try {
         MongoClient.connect(url, function(err, db) {
+            if(err!=null){
+
+                console.log(err);
+                res.render("error.html");
+                return;
+            }
             var benchmarkDB = db.collection('benchmark_logs');
             try {
                 benchmarkDB.aggregate([
@@ -816,6 +966,12 @@ router.get('/search', function(req, res){
                         }
                     }
                 ]).toArray(function(err,searchResults){
+                    if(err!=null){
+
+                        console.log(err);
+                        res.render("error.html");
+                        return;
+                    }
                     res.render("search.html", {
                         searchResults :searchResults,
                         category: searchBy,
