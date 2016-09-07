@@ -1,34 +1,32 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-  <h2 class="sub-header">The Latest 100</h2>
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
+<div class="col-sm-3 col-sm-offset-4 col-md-3 main">
+
+  <p class="h3" align="center">Community Summary</p>
+  <p class="h4" align="center">To date, our community has benchmarked:</p>
+    <div class="table-responsive center-block" >
+      <table class="table">
         <tr>
-          <th>Website</th>
-          <th>Ad Network</th>
-          <th>Status Code</th>
-          <th>File Type</th>
-          <th>Complete Time</th>
-          <th>File Size</th>
+          <td align="center" style="border:none">
+            <p style="font-weight: bold; font-size: 2.5em">{{assets}}</p>
+            <p class="">Assets Benchmarked</p>
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        {% for record in records %}
+      </table>
+      <table class="table">
         <tr>
-          <td>{{record.hostUrl}}</td>
-          <td>{{record.adNetwork}}</td>
-          <td>{{record.statusCode}}</td>
-          <td>{{record.assetType}}</td>
-          <td>{{record.assetCompleteTime}} ms</td>
-          <td>{{record.fileSize}}</td>
+          <td align="center" style="border:none">
+            <p style="font-weight: bold;font-size: 1.8em">{{fileSizes}}</p>
+            <p>Memory Used on Ads</p>
+          </td>
+          <td align="center" style="border:none">
+            <p style="font-weight: bold; font-size: 1.8em">{{loadTimes}}</p>
+            <p>Network Time Spent on Ads</p>
+          </td>
         </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+      </table>
+    </div>
 </div>
 {% endblock %}
 

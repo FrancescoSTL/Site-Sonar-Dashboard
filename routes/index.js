@@ -18,7 +18,48 @@ router.get('/', function(req, res) {
 
 /* GET home page. */
 router.get('/dashboard', function(req, res) {
-    res.redirect('/networksbyloadtime');
+
+    try{
+        MongoClient.connect(url, function(err,db){
+            if(err!=null){
+                res.render("error.html");
+                return;
+            }
+            var benchmarkDB = db.collection('benchmark_logs');
+            try{
+
+                benchmarkDB.aggregate([
+                    {
+                        $group: {
+                            _id: null,
+                            fileSizes: { $sum: "$fileSize"},
+                            loadTimes: { $sum: "$assetCompleteTime"},
+                            assets: { $sum: 1}
+                        }
+                    }
+                ]).toArray(function(err,counts){
+                    if(err!=null){
+                        res.render("error.html");
+                        return;
+                    }
+                    var summary = counts[0];
+                    var assets = summary.assets;
+                    var loadTimes = formatMillseconds(summary.loadTimes,1);
+                    var fileSizes = formatBytes(summary.fileSizes,1);
+
+                    res.render("dashboard.html", {
+                        "assets" : assets,
+                        "fileSizes": fileSizes,
+                        "loadTimes" : loadTimes
+                    })
+                });
+            } catch(e){
+                console.log("Exception connecting to MongoDB");
+            }
+        });
+    } catch(e){
+        console.log("Exception connecting to MongoDB");
+    }
 });
 
 /* Group ad networks by average load time. */
@@ -1021,3 +1062,33 @@ router.post('/log', function(req, res) {
 });
 
 module.exports = router;
+
+function formatBytes (bytes, decimals) {
+    if (bytes === 0) {
+        return '0 Bytes';
+    }
+
+    var k = 1024;
+    var dm = decimals + 1 || 3;
+    var sizes = ['bytes', 'kb', 'mb', 'gb', 'tb', 'pm', 'eb', 'zb', 'yb'];
+    var i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+function formatMillseconds (millisec, decimals) {
+    var seconds = (millisec / 1000).toFixed(decimals);
+    var minutes = (millisec / (1000 * 60)).toFixed(decimals);
+    var hours = (millisec / (1000 * 60 * 60)).toFixed(decimals);
+    var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(decimals);
+
+    if (seconds < 60) {
+        return seconds + " sec";
+    } else if (minutes < 60) {
+        return minutes + " min";
+    } else if (hours < 24) {
+        return hours + " hrs";
+    } else {
+        return days + " days"
+    }
+}
