@@ -25,7 +25,13 @@
           <li class="active"><a href="/dashboard">Dashboard</a></li>
           <li><a href="/privacy">Privacy</a></li>
           <li><a href="/contact">Contact</a></li>
-          <li><a href="https://github.com/FrancescoSTL/Site-Sonar"><b>Download</b></a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>Download</b> <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="https://addons.mozilla.org/en-US/firefox/addon/sitesonar/">Firefox</a></li>
+              <li><a href="https://chrome.google.com/webstore/detail/site-sonar/lpcnigiahglfjiepmmnjcikgecjkfhgc">Chrome</a></li>
+            </ul>
+          </li>
         </ul>
         <div class="col-sm-3 col-md-3 pull-right">
           <form class="navbar-form" role="search" method="get" action="/search">
@@ -75,10 +81,12 @@
     <script src="https://use.fontawesome.com/383724b71c.js"></script>
 
     <!-- jquery -->
-    <script
+    <!--script
       src="http://code.jquery.com/jquery-3.1.0.min.js"
       integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"></script-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <!-- D3 JS-->
     <script src="https://cdn.plot.ly/plotly-1.16.2.min.js" integrity="sha384-EMCCV6Uj3sFiLlamQGLnkK+YeYTXQ3yWby4LpGeCQ5J4t8W5Fw+sQj62QsQdxugx" crossorigin="anonymous"></script>
     <!-- GA Script -->
