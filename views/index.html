@@ -83,7 +83,13 @@
           <li><a href="/dashboard">Dashboard</a></li>
           <li><a href="/privacy">Privacy</a></li>
           <li><a href="/contact">Contact</a></li>
-          <li><a href="https://github.com/FrancescoSTL/Site-Sonar"><b>Download</b></a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>Download</b> <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="https://addons.mozilla.org/en-US/firefox/addon/sitesonar/">Firefox</a></li>
+              <li><a href="https://chrome.google.com/webstore/detail/site-sonar/lpcnigiahglfjiepmmnjcikgecjkfhgc">Chrome</a></li>
+            </ul>
+          </li>
         </ul>
       </div><!--/.nav-collapse -->
     </nav>
@@ -93,7 +99,16 @@
         <div class="col-md-7">
           <h1 style="font-weight:light">Slow ads are bad.</h1>
           <p class="subheading">Browse the web, help us collect data, keep ad networks accountable.</p>
-          <a href="https://github.com/FrancescoSTL/Site-Sonar" class="btn btn-download btn-lg">Download</a>
+
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle btn-download" type="button" data-toggle="dropdown">Download
+              <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="https://addons.mozilla.org/en-US/firefox/addon/sitesonar/">Firefox</a></li>
+              <li><a href="https://chrome.google.com/webstore/detail/site-sonar/lpcnigiahglfjiepmmnjcikgecjkfhgc">Chrome</a></li>
+            </ul>
+            </ul>
+          </div>
         </div>
         <div class="col-md-5" id="desktop-icon">
           <img src="/img/desktop-icon.gif" width="70%">
@@ -161,11 +176,11 @@
 
     <div class="footer">
       <p>
-        <a>Dashboard</a>
+        <a href="/dashboard">Dashboard</a>
         &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
         <a href="/privacy">Privacy</a>
         &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
-        <a href="/contact"><b>Contact</b></a>
+        <a href="/contact">Contact</a>
         &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
         <a href="https://github.com/FrancescoSTL/Site-Sonar">Download</a>
       </p>

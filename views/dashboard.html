@@ -1,28 +1,28 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="col-sm-3 col-sm-offset-4 col-md-3 main">
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-  <p class="h3" align="center">Community Summary</p>
-  <p class="h4" align="center">To date, our community has benchmarked:</p>
+  <p class="h1" align="center">Community Summary</p>
+  <p style="font-size: 1.5em" align="center">To date, our community has benchmarked:</p>
     <div class="table-responsive center-block" >
       <table class="table">
         <tr>
           <td align="center" style="border:none">
-            <p style="font-weight: bold; font-size: 2.5em">{{assets}}</p>
-            <p class="">Assets Benchmarked</p>
+            <p style="font-weight: bold; font-size: 6em">{{assets}}</p>
+            <p style="font-size: 1.3em">Assets Benchmarked</p>
           </td>
         </tr>
       </table>
       <table class="table">
         <tr>
           <td align="center" style="border:none">
-            <p style="font-weight: bold;font-size: 1.8em">{{fileSizes}}</p>
-            <p>Memory Used on Ads</p>
+            <p style="font-weight: bold;font-size: 3.6em">{{fileSizes}}</p>
+            <p style="font-size: 1.3em">Memory Used on Ads</p>
           </td>
           <td align="center" style="border:none">
-            <p style="font-weight: bold; font-size: 1.8em">{{loadTimes}}</p>
-            <p>Network Time Spent on Ads</p>
+            <p style="font-weight: bold; font-size: 3.6em">{{loadTimes}}</p>
+            <p style="font-size: 1.3em">Network Time Spent on Ads</p>
           </td>
         </tr>
       </table>

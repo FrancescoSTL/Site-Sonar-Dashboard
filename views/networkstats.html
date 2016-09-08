@@ -2,27 +2,31 @@
 {% block body %}
 
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h2 class="sub-header">Network Overview: {{network}}</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
+    <h2 class="sub-header">{{network}} Network Summary</h2>
+    <div class="table-responsive center-block" >
+        <table class="table">
             <tr>
-                <th>Assets Benchmarked</th>
-                <th>Average File Size Per Ad</th>
-                <th>Average Load Time Per Ad (TTFB)</th>
+                <td align="center" style="border:none">
+                    <p style="font-weight: bold; font-size: 4em">{{overall[0].count}}</p>
+                    <p style="font-size: 1.3em">Assets Benchmarked</p>
+                </td>
             </tr>
-            </thead>
-            <tbody>
+        </table>
+        <table class="table">
             <tr>
-                <td>{{overall[0].count}}</td>
-                <td>{% if overall[0].averageFileSize/1024<1 %}
-                    {{overall[0].averageFileSize}} Bytes
-                    {% else %}
-                    {{(overall[0].averageFileSize/1024)|round|int}} KB
-                    {% endif %}</td>
-                <td>{{overall[0].averageLoadTime}} ms</td>
+                <td align="center" style="border:none">
+                    <p style="font-weight: bold;font-size: 2.4em">{% if overall[0].averageFileSize/1024<1 %}
+                        {{overall[0].averageFileSize}} Bytes
+                        {% else %}
+                        {{(overall[0].averageFileSize/1024)|round|int}} KB
+                        {% endif %}</p>
+                    <p style="font-size: 1.3em">Average File Size per Ad Asset</p>
+                </td>
+                <td align="center" style="border:none">
+                    <p style="font-weight: bold; font-size: 2.4em">{{overall[0].averageLoadTime}} ms</p>
+                        <p style="font-size: 1.3em">Average Network Time per Ad Asset</p>
+                </td>
             </tr>
-            </tbody>
         </table>
     </div>
     <h3 class="sub-header">Type of Ad Assets used by this Network</h3>
@@ -98,9 +102,9 @@
       t: 100,
       pad: 4
     },
-    title: "Distribution of fileSizes for " + network,
+    title: "Distribution of File Sizes for " + network,
     xaxis: {
-      title: 'fileSize in Bytes',
+      title: 'File Size in Bytes',
       titlefont: {
         family: "HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Lucida Grande, Helvetica, Arial, sans-serif",
         size: 18,
@@ -108,7 +112,7 @@
       }
     },
     yaxis: {
-      title: 'Count',
+      title: 'Assets Benchmarked',
       titlefont: {
         family: "HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Lucida Grande, Helvetica, Arial, sans-serif",
         size: 18,
@@ -143,9 +147,9 @@
           t: 100,
           pad: 4
       },
-      title: "Distribution of asset load times for " + network,
+      title: "Distribution of Ad Load Times for " + network,
       xaxis: {
-          title: 'loadTime in ms',
+          title: 'Ad Load Time in ms',
           titlefont: {
               family: "HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Lucida Grande, Helvetica, Arial, sans-serif",
               size: 18,
@@ -153,7 +157,7 @@
           }
       },
       yaxis: {
-          title: 'Count',
+          title: 'Assets Benchmarked',
           titlefont: {
               family: "HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Lucida Grande, Helvetica, Arial, sans-serif",
               size: 18,

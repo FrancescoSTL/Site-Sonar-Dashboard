@@ -38,7 +38,8 @@
 }
 
 .btn-download:hover {
-  color: #7a4390;
+  background-color: #9c56b8;
+  color: white;
   border-color: #7a4390;
 }
 
@@ -249,4 +250,9 @@ h1 {
 
 #hidden{
   display: none
+}
+
+.table-responsive
+{
+  overflow-x: auto;
 }
